@@ -86,3 +86,15 @@ E:\Mods\Subnautica\AD3D_HabitatSolution\bin\Debug\AD3D_HabitatSolutionMod.dll
 E:\Mods\Subnautica\AD3D_HabitatSolution\bin\Debug\AD3D_HabitatSolutionMod.pdb
 E:\Mods\Subnautica\AD3D_HabitatSolution\obj\Debug\AD3D_HabitatSolutionMod.dll
 E:\Mods\Subnautica\AD3D_HabitatSolution\obj\Debug\AD3D_HabitatSolutionMod.pdb
+E:\Mods\Subnautica\AD3D_HabitatSolution\bin\Debug\DevExpress.Data.v19.2.dll
+E:\Mods\Subnautica\AD3D_HabitatSolution\bin\Debug\DevExpress.Xpo.v19.2.dll
+E:\Mods\Subnautica\AD3D_HabitatSolution\bin\Debug\DevExpress.Data.v19.2.xml
+E:\Mods\Subnautica\AD3D_HabitatSolution\bin\Debug\DevExpress.Xpo.v19.2.xml
+E:\Mods\Subnautica\AD3D_HabitatSolution\bin\Debug\de\DevExpress.Data.v19.2.resources.dll
+E:\Mods\Subnautica\AD3D_HabitatSolution\bin\Debug\es\DevExpress.Data.v19.2.resources.dll
+E:\Mods\Subnautica\AD3D_HabitatSolution\bin\Debug\ja\DevExpress.Data.v19.2.resources.dll
+E:\Mods\Subnautica\AD3D_HabitatSolution\bin\Debug\ru\DevExpress.Data.v19.2.resources.dll
+E:\Mods\Subnautica\AD3D_HabitatSolution\bin\Debug\de\DevExpress.Xpo.v19.2.resources.dll
+E:\Mods\Subnautica\AD3D_HabitatSolution\bin\Debug\es\DevExpress.Xpo.v19.2.resources.dll
+E:\Mods\Subnautica\AD3D_HabitatSolution\bin\Debug\ja\DevExpress.Xpo.v19.2.resources.dll
+E:\Mods\Subnautica\AD3D_HabitatSolution\bin\Debug\ru\DevExpress.Xpo.v19.2.resources.dll

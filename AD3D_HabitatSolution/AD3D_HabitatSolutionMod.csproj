@@ -41,6 +41,8 @@
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>D:\Steam\steamapps\common\Subnautica\Subnautica_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
+    <Reference Include="DevExpress.Data.v19.2, Version=19.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpo.v19.2, Version=19.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="QModInstaller">
       <HintPath>D:\Steam\steamapps\common\Subnautica\BepInEx\plugins\QModManager\QModInstaller.dll</HintPath>
     </Reference>
@@ -246,9 +248,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BO\InGame\LayerSelector.cs" />
+    <Compile Include="BO\Base\AdamantioBlade.cs" />
+    <Compile Include="BO\Base\AlterraVendingMachine.cs" />
+    <Compile Include="BO\Base\AutoBreederTank.cs" />
+    <Compile Include="BO\Base\FoodableItem.cs" />
+    <Compile Include="BO\Base\SeaCrosser.cs" />
+    <Compile Include="BO\InGame\HabitatBubble.cs" />
     <Compile Include="BO\Base\HabitatTest.cs" />
-    <Compile Include="BO\Utils\Constant.cs" />
+    <Compile Include="BO\InGame\Tooltip.cs" />
+    <Compile Include="BO\InGame\VendingMachineItem.cs" />
+    <Compile Include="BO\InGame\VendingMachineSystem.cs" />
     <Compile Include="BO\Utils\Helper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QPatch.cs" />

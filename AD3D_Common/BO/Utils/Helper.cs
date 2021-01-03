@@ -36,6 +36,11 @@ namespace AD3D_Common
             return ImageUtils.LoadSpriteFromTexture(bundle.LoadAsset<Texture2D>(filename));
         }
 
+        public static Texture2D GetTextureFromBundle(AssetBundle bundle, string filename)
+        {
+            return bundle.LoadAsset<Texture2D>(filename);
+        }
+
         public static Atlas.Sprite GetSprite(string modName, string filename, string format = "png")
         {
             return ImageUtils.LoadSpriteFromFile($"./QMods/{modName}/Assets/{filename}.{format}");
@@ -54,6 +59,21 @@ namespace AD3D_Common
         public static Atlas.Sprite GetPrefabKitSprite()
         {
             return ImageUtils.LoadSpriteFromTexture(Bundle.LoadAsset<Texture2D>("Icon_Kit"));
+        }
+
+        public static class ClipboardHelper
+        {
+            public static string ClipBoard
+            {
+                get
+                {
+                    return GUIUtility.systemCopyBuffer;
+                }
+                set
+                {
+                    GUIUtility.systemCopyBuffer = value;
+                }
+            }
         }
     }
 }

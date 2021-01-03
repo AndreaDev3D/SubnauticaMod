@@ -1,6 +1,4 @@
 ﻿using AD3D_Common;
-using AD3D_LightSolutionMod.BO.Utils;
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,7 +20,7 @@ namespace AD3D_LightSolutionMod.BO.InGame
             engine = GameObjectFinder.FindByName(this.gameObject, "Engine");
 
             anim = engine.GetComponent<Animation>();
-            anim.AddClip(Utils.Helper.Bundle.LoadAsset<AnimationClip>("Drilling"), "Drilling");
+            anim.AddClip(AD3D_DeepEngineMod.BO.Utils.Helper.Bundle.LoadAsset<AnimationClip>("Drilling"), "Drilling");
 
             btnActivate = GameObjectFinder.FindByName(this.gameObject, "btnActivate").GetComponent<Button>();
             btnActivate.onClick.AddListener(() => StartNStop());

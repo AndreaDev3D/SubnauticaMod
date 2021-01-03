@@ -1,15 +1,10 @@
-﻿using AD3D_LightSolutionMod.BO.Utils;
+﻿using AD3D_DeepEngineMod;
 using QModManager.Utility;
 using SMLHelper.V2.Json;
 using SMLHelper.V2.Options;
 using SMLHelper.V2.Options.Attributes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace AD3D_LightSolutionMod.BO.Config
+namespace AD3D_DeepEngineMod.BO.Config
 {
     [Menu("DeepEngine Settings")]
     public class DeepEngineConfig : ConfigFile

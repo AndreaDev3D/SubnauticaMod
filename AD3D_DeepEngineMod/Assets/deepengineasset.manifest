@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 227882896
+CRC: 2064317974
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 26861cfacb6e87f6bac65cbede69f6c0
+    Hash: 47f4fa9aa7034c630f76dde5eb8cb1c6
   TypeTreeHash:
     serializedVersion: 2
-    Hash: ae414efea461aff6272a97ebcc97098d
+    Hash: e4da92a3a5da26144d7a794b6d3f670e
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -24,6 +24,8 @@ ClassTypes:
 - Class: 43
   Script: {instanceID: 0}
 - Class: 48
+  Script: {instanceID: 0}
+- Class: 54
   Script: {instanceID: 0}
 - Class: 65
   Script: {instanceID: 0}
@@ -45,6 +47,8 @@ ClassTypes:
   Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
 - Class: 115
   Script: {instanceID: 0}
+- Class: 128
+  Script: {instanceID: 0}
 - Class: 213
   Script: {instanceID: 0}
 - Class: 222
@@ -56,8 +60,10 @@ ClassTypes:
 Assets:
 - Assets/DeepEngine/Prefabs/DeepEngine.prefab
 - Assets/Icons/Main_BG.png
-- Assets/PrefabKit/Models/DeepEngine_Kit.mat
+- Assets/PrefabKit/Models/PrefabKit.mat
 - Assets/Icons/Battery.png
+- Assets/DeepEngine/Prefabs/SolarPanel_1.prefab
+- Assets/DeepEngine/Prefabs/DeepEngine_MK2.prefab
 - Assets/Icons/Wifi.png
 - Assets/DeepEngine/Sounds/Engine_FX.mp3
 - Assets/DeepEngine/Textures/DeepEngine_DeepEngine_MaskMap.png

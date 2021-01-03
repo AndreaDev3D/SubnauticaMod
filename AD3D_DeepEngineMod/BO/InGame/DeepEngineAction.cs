@@ -1,6 +1,6 @@
 ﻿using AD3D_Common;
+using AD3D_DeepEngineMod;
 using AD3D_LightSolutionMod.BO.Patch.DeepEngine;
-using AD3D_LightSolutionMod.BO.Utils;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -130,7 +130,7 @@ namespace AD3D_LightSolutionMod.BO.InGame
         {
             if (!QPatch.Config.MakesNoise) 
                 return;
-            AudioClip = BO.Utils.Helper.Bundle.LoadAsset<AudioClip>("Engine_FX");
+            AudioClip = AD3D_DeepEngineMod.BO.Utils.Helper.Bundle.LoadAsset<AudioClip>("Engine_FX");
             AudioSource = this.gameObject.AddComponent<AudioSource>();
             AudioSource.clip = AudioClip;
             AudioSource.loop = true;

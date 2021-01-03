@@ -265,6 +265,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\FoodIcon.png" />
     <Content Include="Assets\TechFabricator_Icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

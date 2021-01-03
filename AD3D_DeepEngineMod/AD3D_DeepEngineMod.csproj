@@ -89,6 +89,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BO\Base\SolarSource\SolarPanelItem.cs" />
     <Compile Include="BO\Utils\Helper.cs" />
     <Compile Include="BO\InGame\DeepEngineAnim.cs" />
     <Compile Include="BO\Base\DeepEngine\DeepEngineKit.cs" />

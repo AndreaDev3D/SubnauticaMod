@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1805637667
+CRC: 2873867033
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 1d14a8c75a4a58d7dd6586bf617990b7
+    Hash: dfb463c7090f0e8c1c7c73846ccbb2b5
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 427d7d46d489aad6e5209ad50db3a41f
+    Hash: 0a6b7c75841d427db5328e5abba932c3
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -40,8 +40,6 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: 052244de658bf8d49ab02036b718ebd8, type: 3}
-- Class: 114
   Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
 - Class: 115
   Script: {instanceID: 0}
@@ -56,9 +54,24 @@ ClassTypes:
 - Class: 224
   Script: {instanceID: 0}
 Assets:
+- Assets/Icons/btnOFF.png
 - Assets/Light Solution/Prefabs/LightSource_2.prefab
-- Assets/Light Solution/Icons/Icon.png
+- Assets/Light Solution/Icons/LightSource_8.png
+- Assets/Light Solution/Icons/LightSource_3.png
+- Assets/Light Solution/Icons/LightSource_4.png
+- Assets/Light Solution/Icons/LightSource_2.png
+- Assets/Light Solution/Prefabs/LightSource_4.prefab
+- Assets/Light Solution/Icons/LightSource_7.png
+- Assets/Light Solution/Icons/LightSource_5.png
+- Assets/Light Solution/Icons/LightSwitch.png
 - Assets/Light Solution/Prefabs/LightSwitch.prefab
+- Assets/Light Solution/Prefabs/LightSource_7.prefab
+- Assets/Light Solution/Prefabs/LightSource_6.prefab
+- Assets/Light Solution/Icons/LightSource_1.png
+- Assets/Light Solution/Prefabs/LightSource_3.prefab
+- Assets/Light Solution/Prefabs/LightSource_5.prefab
+- Assets/Light Solution/Icons/LightSource_6.png
 - Assets/Light Solution/Prefabs/LightSource_1.prefab
-Dependencies:
-- E:/App/Unity/DeepEngineMod/Assets/Bundles/deepengineasset
+- Assets/Icons/btnON.png
+- Assets/Light Solution/Prefabs/LightSource_8.prefab
+Dependencies: []

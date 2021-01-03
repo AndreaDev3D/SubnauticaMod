@@ -1,5 +1,6 @@
-﻿using AD3D_LightSolutionMod.BO.InGame;
-using AD3D_LightSolutionMod.BO.Utils;
+﻿using AD3D_DeepEngineMod;
+using AD3D_DeepEngineMod.BO.Utils;
+using AD3D_LightSolutionMod.BO.InGame;
 using SMLHelper.V2.Assets;
 using SMLHelper.V2.Crafting;
 using System;
@@ -12,8 +13,7 @@ namespace AD3D_LightSolutionMod.BO.Patch.DeepEngine
 {
     public class DeepEngine : Buildable
     {
-        public const string _AssetName = "deepengineasset";
-        public const string _ClassID = "DeepEngine";
+        public const string _ClassID = "DeepEngine_MK2";
         public const string _FriendlyName = "Deep Engine MK1";
         public const string _Description = "High efficiency electric generator that runs in deep water.";
         public const string _PDAKey = _ClassID;
@@ -44,7 +44,7 @@ namespace AD3D_LightSolutionMod.BO.Patch.DeepEngine
         public override GameObject GetGameObject()
         {
             //Instantiates a copy of the prefab that is loaded from the AssetBundle loaded above.
-            GameObject _prefab = GameObject.Instantiate(Utils.Helper.Bundle.LoadAsset<GameObject>("DeepEngine.prefab"));
+            GameObject _prefab = GameObject.Instantiate(Helper.Bundle.LoadAsset<GameObject>($"{_ClassID}.prefab"));
             _prefab.name = _ClassID;
             //Need a tech tag for most prefabs
             var techTag = _prefab.AddComponent<TechTag>();

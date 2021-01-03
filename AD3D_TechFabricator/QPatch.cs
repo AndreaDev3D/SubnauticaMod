@@ -18,6 +18,9 @@ namespace AD3D_TechFabricatorMod
             var energySolutionTab = "EnergySolutionID";
             techFabricator.AddTabNode(energySolutionTab, "Energy Solution", AD3D_LightSolutionMod.BO.Patch.DeepEngine.DeepEngine.GetItemIcon()); // add EnergySolutionID tab
             techFabricator.AddCraftNode("DeepEngine_Kit", energySolutionTab);
+            var foodSolutionId = "FoodSolutionId";
+            techFabricator.AddTabNode(foodSolutionId, "Food Solution", Helper.GetSprite("AD3D_TechFabricatorMod", "FoodIcon"));
+            techFabricator.AddCraftNode("Bar1", foodSolutionId);
 
             techFabricator.Patch();
 

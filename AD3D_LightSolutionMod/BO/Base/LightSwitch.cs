@@ -111,7 +111,7 @@ namespace AD3D_LightSolutionMod.BO.Base
         }
         protected override Atlas.Sprite GetItemSprite()
         {
-            return Helper.GetSpriteFromBundle(Utils.Helper.Bundle, "Icon");
+            return Helper.GetSpriteFromBundle(Utils.Helper.Bundle, _ClassID);
         }
     }
 }

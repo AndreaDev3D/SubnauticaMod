@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 3973090820
+CRC: 370143088
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 89608a6453cbabbd7bdba9970f1cb3fe
+    Hash: 4f38e8245c7e1050689244daa3fe5e9c
   TypeTreeHash:
     serializedVersion: 2
-    Hash: e4fb9f9c5839aa7904c51ad49bc2c9fb
+    Hash: 422f273d154ac50990fff1e43994fd96
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -25,9 +25,49 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 48
   Script: {instanceID: 0}
+- Class: 54
+  Script: {instanceID: 0}
 - Class: 64
   Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 128
+  Script: {instanceID: 0}
+- Class: 136
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 222
+  Script: {instanceID: 0}
+- Class: 223
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
 Assets:
+- Assets/Habitat Solution/SeaCrosser/Prefabs/SeaCrosser.prefab
+- Assets/Habitat Solution/FoodSolution/Prefabs/Bar1.prefab
+- Assets/Habitat Solution/VendingMachine/Prefab/Vending Machine Plus.prefab
+- Assets/Habitat Solution/VendingMachine/Prefab/Item.prefab
+- Assets/Habitat Solution/Auto Fish-Tank/Icons/AutoBreederTank_Icon.png
 - Assets/Habitat Solution/Prefabs/HabitatTest.prefab
+- Assets/Habitat Solution/Auto Fish-Tank/Prefabs/AutoBreederTank.prefab
 - Assets/Habitat Solution/Icons/Icon.png
+- Assets/Habitat Solution/FoodSolution/Icons/Bar1.png
+- Assets/Habitat Solution/SeaCrosser/Icons/SeaCrosser_Icon.png
 Dependencies: []

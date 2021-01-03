@@ -40,6 +40,12 @@
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>D:\Steam\steamapps\common\Subnautica\Subnautica_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
+    <Reference Include="DevExpress.Data.v19.2, Version=19.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpo.v19.2, Version=19.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\Steam\steamapps\common\Subnautica\Subnautica_Data\Managed\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="QModInstaller">
       <HintPath>D:\Steam\steamapps\common\Subnautica\BepInEx\plugins\QModManager\QModInstaller.dll</HintPath>
     </Reference>
@@ -298,10 +304,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BO\Base\LightSource_2.cs" />
-    <Compile Include="BO\Base\LightSource_1.cs" />
+    <Compile Include="BO\Base\LightSourceItem.cs" />
     <Compile Include="BO\Base\LightSwitch.cs" />
-    <Compile Include="BO\Base\SwitchItem.cs" />
+    <Compile Include="BO\Base\DataItem.cs" />
     <Compile Include="BO\Config\DatabaseConfig.cs" />
     <Compile Include="BO\Config\LightSolutionConfig.cs" />
     <Compile Include="BO\InGame\LightSource.cs" />
@@ -317,7 +322,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(TargetPath)" "D:\Steam\steamapps\common\Subnautica\QMods\$(ProjectName)\" /y

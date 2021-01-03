@@ -85,3 +85,15 @@ E:\Mods\Subnautica\AD3D_LightSolutionMod\bin\Debug\UnityEngine.SubstanceModule.d
 E:\Mods\Subnautica\AD3D_LightSolutionMod\bin\Debug\UnityEngine.TLSModule.dll
 E:\Mods\Subnautica\AD3D_LightSolutionMod\bin\Debug\UnityEngine.UmbraModule.dll
 E:\Mods\Subnautica\AD3D_LightSolutionMod\bin\Debug\UnityEngine.UnityTestProtocolModule.dll
+E:\Mods\Subnautica\AD3D_LightSolutionMod\bin\Debug\DevExpress.Data.v19.2.dll
+E:\Mods\Subnautica\AD3D_LightSolutionMod\bin\Debug\DevExpress.Xpo.v19.2.dll
+E:\Mods\Subnautica\AD3D_LightSolutionMod\bin\Debug\DevExpress.Data.v19.2.xml
+E:\Mods\Subnautica\AD3D_LightSolutionMod\bin\Debug\DevExpress.Xpo.v19.2.xml
+E:\Mods\Subnautica\AD3D_LightSolutionMod\bin\Debug\de\DevExpress.Data.v19.2.resources.dll
+E:\Mods\Subnautica\AD3D_LightSolutionMod\bin\Debug\es\DevExpress.Data.v19.2.resources.dll
+E:\Mods\Subnautica\AD3D_LightSolutionMod\bin\Debug\ja\DevExpress.Data.v19.2.resources.dll
+E:\Mods\Subnautica\AD3D_LightSolutionMod\bin\Debug\ru\DevExpress.Data.v19.2.resources.dll
+E:\Mods\Subnautica\AD3D_LightSolutionMod\bin\Debug\de\DevExpress.Xpo.v19.2.resources.dll
+E:\Mods\Subnautica\AD3D_LightSolutionMod\bin\Debug\es\DevExpress.Xpo.v19.2.resources.dll
+E:\Mods\Subnautica\AD3D_LightSolutionMod\bin\Debug\ja\DevExpress.Xpo.v19.2.resources.dll
+E:\Mods\Subnautica\AD3D_LightSolutionMod\bin\Debug\ru\DevExpress.Xpo.v19.2.resources.dll

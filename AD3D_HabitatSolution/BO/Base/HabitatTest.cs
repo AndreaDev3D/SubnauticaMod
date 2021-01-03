@@ -1,17 +1,20 @@
 ﻿using AD3D_Common;
-using AD3D_HabitatSolution.BO.Utils;
+using AD3D_HabitatSolutionMod.BO.InGame;
+using AD3D_HabitatSolutionMod.BO.Utils;
 using SMLHelper.V2.Assets;
 using SMLHelper.V2.Crafting;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Constant = AD3D_HabitatSolution.BO.Utils.Constant;
 
-namespace AD3D_HabitatSolution.BO.Base
+namespace AD3D_HabitatSolutionMod.BO
 {
     public class HabitatTest : Buildable
     {
-        public HabitatTest() : base(Constant.HabitatTest_ClassID, Constant.HabitatTest_FriendlyName, Constant.HabitatTest_ShortDescription)
+        public const string _ClassID = "HabitatTest";
+        public const string _FriendlyName = "Habitat Test";
+        public const string _ShortDescription = "Underwater Habitat base.";
+        public HabitatTest() : base(_ClassID, _FriendlyName, _ShortDescription)
         {
         }
 
@@ -35,7 +38,7 @@ namespace AD3D_HabitatSolution.BO.Base
         {
             //Instantiates a copy of the prefab that is loaded from the AssetBundle loaded above.
             GameObject _prefab = GameObject.Instantiate(Utils.Helper.Bundle.LoadAsset<GameObject>("HabitatTest.prefab"));
-            _prefab.name = Constant.HabitatTest_ClassID;
+            _prefab.name = _ClassID;
             //Need a tech tag for most prefabs
             var techTag = _prefab.AddComponent<TechTag>();
             techTag.type = TechType;
@@ -52,37 +55,48 @@ namespace AD3D_HabitatSolution.BO.Base
             ApplySubnauticaShaders(_prefab);
 
             // Add constructable - This prefab normally isn't constructed.
+            var rootModel = GameObjectFinder.FindByName(_prefab, "Root");
             ConstructableBase constructible = _prefab.AddComponent<ConstructableBase>();
             constructible.constructedAmount = 1;
-            constructible.allowedInBase = false;
-            constructible.allowedInSub = false;
-            constructible.allowedOutside = true;
-            constructible.allowedOnCeiling = false;
-            constructible.allowedOnGround = true;
-            constructible.allowedOnWall = false;
-            constructible.allowedOnConstructables = false;
             constructible.techType = this.TechType;
-            constructible.rotationEnabled = true;
-            constructible.placeDefaultDistance = 6f;
-            constructible.placeMinDistance = 0.5f;
-            constructible.placeMaxDistance = 15f;
-            constructible.surfaceType = VFXSurfaceTypes.metal;
-            constructible.model = _prefab;//.transform.GetChild(0).gameObject;
+            constructible.model = rootModel;
+            //constructible.builtBoxFX = null;
+            constructible.controlModelState = true;
+            constructible.allowedOnWall = false;
+            constructible.allowedOnGround = true;
+            constructible.allowedOnCeiling = false;
+            constructible.deconstructionAllowed = true;
+            constructible.allowedInSub = false;
+            constructible.allowedInBase = false;
+            constructible.allowedOutside = true;
+            constructible.allowedOnConstructables = false;
             constructible.forceUpright = true;
-            //_prefab.AddComponent<LayerSelector>();
+            constructible.rotationEnabled = true;
+            constructible.placeDefaultDistance = 10f;
+            constructible.placeMinDistance = 5f;
+            constructible.placeMaxDistance = 20f;
+            constructible.surfaceType = VFXSurfaceTypes.metal;
+
+            //rootModel.AddComponent<Base>();
+            //var baseGhost = rootModel.AddComponent<BaseAddCellGhost>();
+            //baseGhost.cellType = Base.CellType.Moonpool;
+            //baseGhost.minHeightFromTerrain = 2;
+            //baseGhost.maxHeightFromTerrain = 10;
+
+            _prefab.AddComponent<HabitatBubble>();
 
             //_prefab.AddComponent<Rigidbody>();
             //var constructableBase = _prefab.AddComponent<ConstructableBase>();
             //var prefabIdentifier = _prefab.AddComponent<PrefabIdentifier>();
 
 
-            PowerRelay baseRoom = CraftData.GetPrefabForTechType(TechType.BaseRoom).GetComponent<PowerRelay>();
-            var baseGhost = GameObjectFinder.FindByName(_prefab, "Habitat_Proxy");
-            var baseG = baseGhost.AddComponent<global::Base>();
-            baseG = baseRoom.GetComponent<global::Base>();
-            //baseG.isGhost = false;
-            var baseGC = baseGhost.AddComponent<BaseAddCellGhost>();
-            baseGC = baseRoom.GetComponent<BaseAddCellGhost>();
+            //PowerRelay baseRoom = CraftData.GetPrefabForTechType(TechType.BaseRoom).GetComponent<PowerRelay>();
+            //var baseGhost = GameObjectFinder.FindByName(_prefab, "Habitat_Proxy");
+            //var baseG = baseGhost.AddComponent<global::Base>();
+            //baseG = baseRoom.GetComponent<global::Base>();
+            ////baseG.isGhost = false;
+            //var baseGC = baseGhost.AddComponent<BaseAddCellGhost>();
+            //baseGC = baseRoom.GetComponent<BaseAddCellGhost>();
             //baseGC.cellType = Base.CellType.Moonpool;
             //baseGC.minHeightFromTerrain = 2;
             //baseGC.maxHeightFromTerrain = 10;
@@ -132,7 +146,7 @@ namespace AD3D_HabitatSolution.BO.Base
         }
         protected override Atlas.Sprite GetItemSprite()
         {
-            return Utils.Helper.GetSpriteFromBundle("Icon");
+            return AD3D_Common.Helper.GetSpriteFromBundle(Utils.Helper.Bundle, $"{_ClassID}_Icon");
         }
     }
 }
