@@ -1,4 +1,5 @@
-﻿using AD3D_StorageSolution.Items.Storage;
+﻿using AD3D_Common;
+using AD3D_StorageSolution.Items.Storage;
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
@@ -20,7 +21,7 @@ namespace AD3D_StorageSolution
 
         private void Awake()
         {
-            AssetBundle = AssetBundleLoadingUtils.LoadFromAssetsFolder(Assembly, "storagesolution.asset");
+            AssetBundle = Helper.GetAssetBundle(Assembly.Location, "storagesolution.asset");
 
             // set project-scoped logger instance
             Logger = base.Logger;

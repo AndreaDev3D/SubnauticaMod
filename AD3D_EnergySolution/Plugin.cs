@@ -1,4 +1,5 @@
-﻿using AD3D_EnergySolution.BO.Runtime;
+﻿using AD3D_Common;
+using AD3D_EnergySolution.BO.Runtime;
 using AD3D_EnergySolution.Config;
 using AD3D_EnergySolution.Items.Buildable;
 using AD3D_EnergySolution.Runtime;
@@ -27,7 +28,7 @@ namespace AD3D_EnergySolution
 
         private void Awake()
         {
-            AssetsBundle = AssetBundleLoadingUtils.LoadFromAssetsFolder(Assembly, "energysolution.asset");
+            AssetsBundle = Helper.GetAssetBundle(Assembly.Location, "energysolution.asset");
             
             DeepEngineConfig = OptionsPanelHandler.RegisterModOptions<DeepEngineConfig>();
             DeepEngineConfig.Load();

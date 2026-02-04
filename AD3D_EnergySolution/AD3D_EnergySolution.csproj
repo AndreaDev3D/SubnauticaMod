@@ -27,7 +27,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\AD3D_Common\AD3D_Common.csproj" />
+	  <ProjectReference Include="..\AD3D_Common\AD3D_Common.csproj" />
 	</ItemGroup>
 
 	<Import Project="..\References.targets" />

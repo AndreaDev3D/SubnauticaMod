@@ -1,4 +1,5 @@
-﻿using AD3D_TransportSolution.Items.Drivable;
+﻿using AD3D_Common;
+using AD3D_TransportSolution.Items.Drivable;
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
@@ -20,7 +21,7 @@ namespace AD3D_TransportSolution
 
         private void Awake()
         {
-            AssetBundle = AssetBundleLoadingUtils.LoadFromAssetsFolder(Assembly, "transportsolutions.asset");
+            AssetBundle = Helper.GetAssetBundle(Assembly.Location, "transportsolutions.asset");
             // set project-scoped logger instance
             Logger = base.Logger;
 

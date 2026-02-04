@@ -1,4 +1,5 @@
-﻿using BepInEx;
+﻿using AD3D_Common;
+using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
 using Nautilus.Utility;
@@ -19,7 +20,7 @@ namespace AD3D_SubnauticaGitManager
 
         private void Awake()
         {
-            AssetBundle = AssetBundleLoadingUtils.LoadFromAssetsFolder(Assembly, "sgmsolution.asset");
+            AssetBundle = Helper.GetAssetBundle(Assembly.Location, "sgmsolution.asset");
 
             // set project-scoped logger instance
             Logger = base.Logger;

@@ -25,7 +25,7 @@ namespace AD3D_LightSolution
 
         private void Awake()
         {
-            AssetBundle = AssetBundleLoadingUtils.LoadFromAssetsFolder(Assembly, "lightsolution.asset");
+            AssetBundle = Helper.GetAssetBundle(Assembly.Location, "lightsolution.asset");
 
             Database = OptionsPanelHandler.RegisterModOptions<DatabaseConfig>();
             Database.Load();

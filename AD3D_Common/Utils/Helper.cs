@@ -24,7 +24,7 @@ namespace AD3D_Common
             return bundle.LoadAsset<GameObject>(filename);
         }
 
-        public static Atlas.Sprite GetSpriteFromBundle(AssetBundle bundle, string filename)
+        public static Sprite GetSpriteFromBundle(AssetBundle bundle, string filename)
         {
             return null;
             //return ImageUtils.LoadSpriteFromTexture(bundle.LoadAsset<Texture2D>(filename));
@@ -35,7 +35,7 @@ namespace AD3D_Common
             return bundle.LoadAsset<Texture2D>(filename);
         }
 
-        public static Atlas.Sprite GetSprite(string modName, string filename, string format = "png")
+        public static Sprite GetSprite(string modName, string filename, string format = "png")
         {
             return null;
             //return ImageUtils.LoadSpriteFromFile($"{Path.GetDirectoryName(Assembly.GetCallingAssembly().Location)}/Assets/{filename}.{format}");
@@ -51,7 +51,7 @@ namespace AD3D_Common
         //    QModManager.Utility.Logger.Log(loggerLevel, $"{text} {Constant.Spacer}", showOnScreen: showOnScreen);
         //}
 
-        public static Atlas.Sprite GetPrefabKitSprite()
+        public static Sprite GetPrefabKitSprite()
         {
             return null;// ImageUtils.LoadSpriteFromTexture(Bundle.LoadAsset<Texture2D>("Icon_Kit"));
         }

@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1579720354
+CRC: 4159790684
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: dd057b8761ccd1c4932ee65ac4ff0f96
+    Hash: 71fd5ed441e282372b88849b112fc69d
   TypeTreeHash:
     serializedVersion: 2
     Hash: cd5e24156bf84321f27f53a72a298b4e
@@ -66,6 +66,7 @@ Assets:
 - Assets/Resources/Icons/Wifi.png
 - Assets/EnergySolution/Sounds/Engine_FX.mp3
 - Assets/EnergySolution/Textures/DeepEngine_DeepEngine_MaskMap.png
+- Assets/EnergySolution/Icons/PowerWindTurbine 1.png
 - Assets/EnergySolution/Textures/DeepEngine_DeepEngine_BaseMap.png
 - Assets/EnergySolution/Textures/DeepEngine_DeepEngine_Emissive.png
 - Assets/Resources/Icons/Power.png
@@ -77,4 +78,5 @@ Assets:
 - Assets/EnergySolution/Prefabs/DeepEngine_Kit.prefab
 - Assets/EnergySolution/Animation/Drilling.anim
 - Assets/EnergySolution/Prefabs/PowerWindTurbine.prefab
+- Assets/EnergySolution/Icons/DeepEngine 1.png
 Dependencies: []

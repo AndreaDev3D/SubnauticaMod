@@ -9,10 +9,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using static AD3D_LightSolution.Base.Enumerators;
 
-#if SN
-using static Atlas.Sprite;
-#endif
-
 namespace AD3D_LightSolution.Runtime
 {
     public class LightSwitch : MonoBehaviour, IProtoEventListener, IHandTarget
