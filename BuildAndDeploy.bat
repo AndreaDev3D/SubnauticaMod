@@ -48,7 +48,12 @@ xcopy "%targetDir%\Assets\*.manifest" "%targetFolder%\Assets\" /y
 xcopy "%targetDir%\Assets\*.png" "%targetFolder%\Assets\" /y
 
 REM Zip the mod folder
-7z a -tzip "%zipDestination%" "%targetFolder%" -mx9
+set "SEVENZIP=C:\Program Files\7-Zip\7z.exe"
+if exist "%SEVENZIP%" (
+    "%SEVENZIP%" a -tzip "%zipDestination%" "%targetFolder%" -mx9
+) else (
+    echo WARNING: 7z.exe not found at %SEVENZIP%. Skipping zip creation.
+)
 
 REM Notify completion
 echo Mod build and deployment complete.

@@ -6,6 +6,6 @@
 	</PropertyGroup>
 	
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="call &quot;$(BuildScriptPath)&quot; &quot;$(ProjectName)&quot; &quot;$(TargetPath)&quot; &quot;$(ProjectDir)&quot; &quot;$(TargetDir)&quot; &quot;$(Configuration)&quot;&#xD;&#xA;" />
+    <Exec Command="call &quot;$(BuildScriptPath)&quot; &quot;$(ProjectName)&quot; &quot;$(TargetPath)&quot; &quot;$(ProjectDir)\&quot; &quot;$(TargetDir)\&quot; &quot;$(Configuration)&quot;" />
   </Target>
 </Project>
