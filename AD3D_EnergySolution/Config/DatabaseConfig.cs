@@ -1,13 +1,16 @@
 ﻿using Nautilus.Json;
 using Nautilus.Options;
 using Nautilus.Options.Attributes;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 
 namespace AD3D_EnergySolution.Config
 {
     [Menu(PluginInfo.PLUGIN_NAME +" Settings")]
-    public class DeepEngineConfig : ConfigFile
+    public class DatabaseConfig : ConfigFile
     {
+        [JsonIgnore]
         public Action OnConfigChanged;
 
         [Slider("Max Power Allowed", 500, 750, DefaultValue = 500, Step = 5, Tooltip = "Max power capacity for each generator")]
@@ -22,9 +25,11 @@ namespace AD3D_EnergySolution.Config
         [Toggle("Verboso", Tooltip = "Log info in log"), OnChange(nameof(ConfigChanged))]
         public bool LogEvent { get; set; } = true;
 
+        public Dictionary<string, float> LubricantLevels { get; set; } = new Dictionary<string, float>();
+
         private void ConfigChanged(ToggleChangedEventArgs e)
         {
-            Plugin.DeepEngineConfig.Load();
+            Plugin.DatabaseConfig.Load();
             OnConfigChanged?.Invoke();
         }
     }
