@@ -1,25 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-	<PropertyGroup>
-		<PostBuildEvent>
-			if not "$(Configuration)" == "SN2" (
-				mkdir "$(ModFolder)\$(TargetName)"
-				copy /Y "$(TargetPath)" "$(ModFolder)\$(TargetName)"
-				powershell "$(SolutionDir)JsonGameReplace.ps1" -JsonFile "$(ProjectDir)\mod.json" -Config "$(GameName)"
-				copy /Y "$(ProjectDir)\mod.json" "$(GameDir)\QMods\$(TargetName)\mod.json"
-			)
+  <Import Project="Configurations.targets" Condition="Exists('Configurations.targets')" />
 
-			if "$(Configuration)" == "SN2" (
-				mkdir "$(SolutionDir)\zips"
-				IF EXIST "$(SolutionDir)\zips\$(TargetName).zip" DEL /F "$(SolutionDir)\zips\$(TargetName).zip"
+  <PropertyGroup>
+    <SolutionDir Condition="'$(SolutionDir)' == ''">$(MSBuildThisFileDirectory)</SolutionDir>
+    <ModFolder Condition="'$(ModFolder)' == '' and '$(Configuration)' == 'SN'">D:\Steam\steamapps\common\Subnautica\BepInEx\plugins</ModFolder>
+    <ModFolder Condition="'$(ModFolder)' == '' and '$(Configuration)' == 'BZ'">D:\Steam\steamapps\common\SubnauticaZero\BepInEx\plugins</ModFolder>
+  </PropertyGroup>
 
-				mkdir "$(ProjectDir)\Plugins\$(TargetName)"
-				copy /Y "$(TargetPath)" "$(ProjectDir)\Plugins\$(TargetName)\$(TargetName).dll"
-				$(SolutionDir)\7zip\7z.exe a "$(SolutionDir)\zips\$(TargetName).zip" "$(ProjectDir)\Plugins"
+  <Target Name="CustomPostBuild" AfterTargets="Build">
+    <Exec Command="
+mkdir &quot;$(ModFolder)\$(TargetName).$(Configuration)&quot;
+mkdir &quot;$(ModFolder)\$(TargetName).$(Configuration)\Assets&quot;
 
-				Xcopy /Y /E /I "$(ProjectDir)Plugins" "$(ModFolder)"
-			)
-		</PostBuildEvent>
-	</PropertyGroup>
+copy /Y &quot;$(TargetPath)&quot; &quot;$(ModFolder)\$(TargetName).$(Configuration)\&quot;
+if exist &quot;$(ProjectDir)mod.json&quot; copy /Y &quot;$(ProjectDir)mod.json&quot; &quot;$(ModFolder)\$(TargetName).$(Configuration)\&quot;
+if exist &quot;$(ProjectDir)Assets\*.asset&quot; copy /Y &quot;$(ProjectDir)Assets\*.asset&quot; &quot;$(ModFolder)\$(TargetName).$(Configuration)\Assets\&quot;
+if exist &quot;$(ProjectDir)Assets\*.manifest&quot; copy /Y &quot;$(ProjectDir)Assets\*.manifest&quot; &quot;$(ModFolder)\$(TargetName).$(Configuration)\Assets\&quot;
+if exist &quot;$(ProjectDir)Assets\*.png&quot; copy /Y &quot;$(ProjectDir)Assets\*.png&quot; &quot;$(ModFolder)\$(TargetName).$(Configuration)\Assets\&quot;
+
+:: Copy AD3D_Common and its Assets if they exist in the target dir
+if exist &quot;$(TargetDir)AD3D_Common.dll&quot; copy /Y &quot;$(TargetDir)AD3D_Common.dll&quot; &quot;$(ModFolder)\$(TargetName).$(Configuration)\&quot;
+if exist &quot;$(TargetDir)Assets\*.asset&quot; copy /Y &quot;$(TargetDir)Assets\*.asset&quot; &quot;$(ModFolder)\$(TargetName).$(Configuration)\Assets\&quot;
+if exist &quot;$(TargetDir)Assets\*.manifest&quot; copy /Y &quot;$(TargetDir)Assets\*.manifest&quot; &quot;$(ModFolder)\$(TargetName).$(Configuration)\Assets\&quot;
+if exist &quot;$(TargetDir)Assets\*.png&quot; copy /Y &quot;$(TargetDir)Assets\*.png&quot; &quot;$(ModFolder)\$(TargetName).$(Configuration)\Assets\&quot;
+
+:: Zip creation
+if not exist &quot;$(SolutionDir)Download\$(Configuration)&quot; mkdir &quot;$(SolutionDir)Download\$(Configuration)&quot;
+set &quot;SEVENZIP=C:\Program Files\7-Zip\7z.exe&quot;
+if exist &quot;%SEVENZIP%&quot; (
+  &quot;%SEVENZIP%&quot; a -tzip &quot;$(SolutionDir)Download\$(Configuration)\$(TargetName).$(Configuration).zip&quot; &quot;$(ModFolder)\$(TargetName).$(Configuration)\*&quot; -mx9 -y
+) else (
+  echo WARNING: 7z.exe not found at %SEVENZIP%. Skipping zip creation.
+)
+    " />
+  </Target>
 </Project>
