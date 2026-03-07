@@ -12,6 +12,7 @@ namespace AD3D_LightSolution.Base
         public string Id { get; set; }
         public string ItemType { get; set; }
         public bool IsEnable { get; private set; }
+        public bool IsBaseEnabled { get; private set; } = true;
         public int SyncCode { get; private set; }
         public float R { get; private set; } = 1.0f;
         public float G { get; private set; } = 1.0f;
@@ -38,11 +39,12 @@ namespace AD3D_LightSolution.Base
         public DateTime LastUpdate { get; private set; }
 
         [JsonConstructor]
-        public DataItem(string id, string itemType, bool isEnable, string syncCode, float r, float g, float b, float intensity)
+        public DataItem(string id, string itemType, bool isEnable, string syncCode, float r, float g, float b, float intensity, bool isBaseEnabled = true)
         {
             Id = id;
             ItemType = itemType;
             IsEnable = isEnable;
+            IsBaseEnabled = isBaseEnabled;
             SyncCode = Convert.ToInt32(syncCode);
             if(SyncCode == 0 && ItemType == SwitchItemType.Switch.ToString())
             {
@@ -67,6 +69,15 @@ namespace AD3D_LightSolution.Base
             if (IsEnable != isEnable)
             {
                 IsEnable = isEnable;
+                Update();
+            }
+        }
+
+        public void SetBaseEnable(bool isBaseEnabled)
+        {
+            if (IsBaseEnabled != isBaseEnabled)
+            {
+                IsBaseEnabled = isBaseEnabled;
                 Update();
             }
         }
@@ -112,7 +123,7 @@ namespace AD3D_LightSolution.Base
             do
             {
                 newSyncCode = UnityEngine.Random.Range(1000, 9999);
-            } while (Plugin.Database.SwitchItemList.Exists(item => item.SyncCode == newSyncCode));
+            } while (Plugin.ModData.SwitchItemList.Exists(item => item.SyncCode == newSyncCode));
 
             return newSyncCode;
         }

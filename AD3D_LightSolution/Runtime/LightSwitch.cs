@@ -2,7 +2,6 @@
 using AD3D_Common.Extentions;
 using AD3D_LightSolution.Base;
 using Nautilus.Utility;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -14,7 +13,7 @@ namespace AD3D_LightSolution.Runtime
     public class LightSwitch : MonoBehaviour, IProtoEventListener, IHandTarget
     {
         // Event
-        public static event Action<int, bool, Color, float> OnStatusChanged;
+        public static event System.Action<int, bool, Color, float> OnStatusChanged;
 
         // db
         public string Id => gameObject.GetComponent<PrefabIdentifier>().Id;
@@ -105,6 +104,7 @@ namespace AD3D_LightSolution.Runtime
             _btnHome.onClick.AddListener(() => ToggleSettingsDisplay(false));
 
             _btnBasePower = this.gameObject.FindComponentByName<Button>("btnBasePower");
+            _btnBasePower.onClick.AddListener(ToggleBasePower);
 
             _btnLessPower = this.gameObject.FindComponentByName<Button>("btnLessPower"); 
             _btnLessPower.onClick.AddListener(() => SetIntensity(-0.25f));
@@ -128,7 +128,8 @@ namespace AD3D_LightSolution.Runtime
             _sliderB.value = LightColor.b;
             _colorPicker.color = LightColor;
 
-            ToggleSettingsDisplay(false);
+            ToggleSettingsDisplay(false); 
+            ToggleLightSwitch();
             UpdateSyncCodeDisplay();
             UpdateSwitchButton();
             UpdateIntensityDisplay();
@@ -158,6 +159,12 @@ namespace AD3D_LightSolution.Runtime
             OnStatusChanged?.Invoke(DbItem.SyncCode, IsEnabled, LightColor, Intensity);
         }
 
+        private void ToggleBasePower()
+        {
+            IsBaseEnabled = !IsBaseEnabled;
+            ToggleLightSwitch();
+        }
+
         private void SetMainColor(float _)
         {
             LightColor = new Color(_sliderR.value, _sliderG.value, _sliderB.value, 1.0f);
@@ -185,6 +192,55 @@ namespace AD3D_LightSolution.Runtime
         private void UpdateIntensityDisplay()
         {
             _txtIntensity.text = Intensity.ToString("F2");
+        }
+
+        public SubRoot GetSubRoot()
+        {
+            SubRoot subRoot = this.GetComponentInParent<SubRoot>();
+            if ((Object) subRoot == (Object) null)
+                subRoot = this.gameObject?.transform?.parent?.GetComponent<SubRoot>();
+            if ((Object) subRoot == (Object) null)
+                subRoot = (SubRoot) this.GetComponentInParent<BaseRoot>();
+            if ((Object) subRoot == (Object) null)
+                subRoot = (SubRoot) this.gameObject?.transform?.parent?.GetComponent<BaseRoot>();
+            return subRoot;
+        }
+
+        public void ToggleLightSwitch()
+        {
+            if (!this.enabled)
+                return;
+            SubRoot subRoot = this.GetSubRoot();
+            if ((Object)subRoot == (Object)null)
+                return;
+            Constructable component = this.GetComponent<Constructable>();
+            if ((UnityEngine.Object)component == (UnityEngine.Object)null || !component.constructed)
+                return;
+
+            bool isCurrentlyOn = (bool)_isLightsOnField.GetValue(subRoot);
+
+            if (isCurrentlyOn != IsBaseEnabled)
+            {
+                subRoot.ForceLightingState(IsBaseEnabled);
+                if (IsBaseEnabled)
+                {
+                    FMODAsset asset = new FMODAsset();
+                    asset.id = "2103";
+                    asset.path = "event:/sub/cyclops/lights_on";
+                    asset.name = "5384ec29-f493-4ac1-9f74-2c0b14d61440";
+                    asset.hideFlags = HideFlags.None;
+                    FMODUWE.PlayOneShot(asset, MainCamera.camera.transform.position);
+                }
+                else
+                {
+                    FMODAsset asset = new FMODAsset();
+                    asset.id = "2102";
+                    asset.path = "event:/sub/cyclops/lights_off";
+                    asset.name = "95b877e8-2ccd-451d-ab5f-fc654feab173";
+                    asset.hideFlags = HideFlags.None;
+                    FMODUWE.PlayOneShot(asset, MainCamera.camera.transform.position);
+                }
+            }
         }
 
         public void OnDestroy()
