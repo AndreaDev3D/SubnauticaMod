@@ -36,7 +36,7 @@ namespace AD3D_EnergySolution.BO.Runtime
 
         public override void Start()
         {
-            Plugin.DeepEngineConfig.OnConfigChanged += () =>
+            Plugin.ModConfig.OnConfigChanged += () =>
             {
                 SetEmittedRate();
             };

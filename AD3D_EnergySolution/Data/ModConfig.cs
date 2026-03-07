@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace AD3D_EnergySolution.Config
 {
     [Menu(PluginInfo.PLUGIN_NAME +" Settings")]
-    public class DatabaseConfig : ConfigFile
+    public class ModConfig : ConfigFile
     {
         [JsonIgnore]
         public Action OnConfigChanged;
@@ -25,11 +25,9 @@ namespace AD3D_EnergySolution.Config
         [Toggle("Verboso", Tooltip = "Log info in log"), OnChange(nameof(ConfigChanged))]
         public bool LogEvent { get; set; } = true;
 
-        public Dictionary<string, float> LubricantLevels { get; set; } = new Dictionary<string, float>();
-
         private void ConfigChanged(ToggleChangedEventArgs e)
         {
-            Plugin.DatabaseConfig.Load();
+            Plugin.ModConfig.Load();
             OnConfigChanged?.Invoke();
         }
     }

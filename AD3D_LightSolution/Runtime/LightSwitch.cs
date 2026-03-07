@@ -19,11 +19,13 @@ namespace AD3D_LightSolution.Runtime
         // db
         public string Id => gameObject.GetComponent<PrefabIdentifier>().Id;
 
-        public DataItem DbItem => Plugin.Database.SwitchItemList.FirstOrDefault(w => w.Id == Id);
+        public DataItem DbItem => Plugin.ModData.SwitchItemList.FirstOrDefault(w => w.Id == Id);
 
         // Ingame
+        private static readonly System.Reflection.FieldInfo _isLightsOnField = typeof(SubRoot).GetField("subLightsOn", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
         public int SyncCode => DbItem.SyncCode;
         public bool IsEnabled { get; private set; }
+        public bool IsBaseEnabled { get; private set; }
         public Color LightColor { get; private set; }
         public float Intensity { get; private set; } = 0.5f;
 
@@ -189,7 +191,7 @@ namespace AD3D_LightSolution.Runtime
         {
             LightSource.OnSyncLight -= SyncLightWithSource;
             Plugin.Logger.LogInfo($"Destroying LightSwitch with ID: {Id}");
-            Plugin.Database.SwitchItemList.Remove(DbItem);
+            Plugin.ModData.SwitchItemList.Remove(DbItem);
         }
 
         // Saving
@@ -197,9 +199,10 @@ namespace AD3D_LightSolution.Runtime
         {
             DbItem.SetSyncCode(SyncCode);
             DbItem.SetEnable(IsEnabled);
+            DbItem.SetBaseEnable(IsBaseEnabled);
             DbItem.SetIntensity(Intensity);
             DbItem.SetColor(LightColor);
-            Plugin.Database.Save();
+            Plugin.ModData.Save();
         }
 
         // Loading
@@ -208,23 +211,24 @@ namespace AD3D_LightSolution.Runtime
             InitDb();
             //SyncCode = DbItem.SyncCode;
             IsEnabled = DbItem.IsEnable;
+            IsBaseEnabled = DbItem.IsBaseEnabled;
             Intensity = DbItem.Intensity;
             LightColor = new Color(DbItem.R, DbItem.G, DbItem.B, 1.0f);
         }
 
         private void InitDb()
         {
-            if (Plugin.Database.SwitchItemList == null)
+            if (Plugin.ModData.SwitchItemList == null)
             {
-                Plugin.Database.SwitchItemList = new List<DataItem>();
+                Plugin.ModData.SwitchItemList = new List<DataItem>();
             }
 
             Plugin.Logger.LogInfo($"Initializing database with ID: {Id}");
 
-            if (!Plugin.Database.SwitchItemList.Exists(w => w.Id == Id))
+            if (!Plugin.ModData.SwitchItemList.Exists(w => w.Id == Id))
             {
                 var newSwitch = new DataItem(Id, SwitchItemType.Switch);
-                Plugin.Database.SwitchItemList.Add(newSwitch);
+                Plugin.ModData.SwitchItemList.Add(newSwitch);
                 Plugin.Logger.LogInfo($"Created new LightSwitch with ID: {Id}[{newSwitch.SyncCode}]");
             }
         }

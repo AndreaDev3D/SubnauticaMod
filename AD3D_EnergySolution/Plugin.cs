@@ -24,14 +24,17 @@ namespace AD3D_EnergySolution
         public new static ManualLogSource Logger { get; private set; }
         private static Assembly Assembly { get; } = Assembly.GetExecutingAssembly();
         public static AssetBundle AssetsBundle { get; private set; }
-        public static DatabaseConfig DatabaseConfig { get; private set; }
+        public static ModConfig ModConfig { get; private set; }
+        public static ModData ModData { get; private set; }
 
         private void Awake()
         {
             AssetsBundle = Helper.GetAssetBundle(Assembly.Location, "energysolution.asset");
             
-            DatabaseConfig = OptionsPanelHandler.RegisterModOptions<DatabaseConfig>();
-            DatabaseConfig.Load();
+            ModConfig = OptionsPanelHandler.RegisterModOptions<ModConfig>();
+            ModConfig.Load();
+
+            ModData = SaveDataHandler.RegisterSaveDataCache<ModData>();
 
             // set project-scoped logger instance
             Logger = base.Logger;

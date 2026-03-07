@@ -21,14 +21,13 @@ namespace AD3D_LightSolution
         private static Assembly Assembly { get; } = Assembly.GetExecutingAssembly();
 
         public static AssetBundle AssetBundle { get; private set; }
-        public static DatabaseConfig Database { get; private set; }
+        public static ModData ModData { get; private set; }
 
         private void Awake()
         {
             AssetBundle = Helper.GetAssetBundle(Assembly.Location, "lightsolution.asset");
 
-            Database = OptionsPanelHandler.RegisterModOptions<DatabaseConfig>();
-            Database.Load();
+            ModData = SaveDataHandler.RegisterSaveDataCache<ModData>();
 
             // set project-scoped logger instance
             Logger = base.Logger;

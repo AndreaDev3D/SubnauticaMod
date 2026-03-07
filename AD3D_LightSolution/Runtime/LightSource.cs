@@ -19,7 +19,7 @@ namespace AD3D_LightSolution.Runtime
 
         public string Id => gameObject.GetComponent<PrefabIdentifier>().Id;
 
-        private DataItem DbItem => Plugin.Database.SwitchItemList.FirstOrDefault(w => w.Id == Id);
+        private DataItem DbItem => Plugin.ModData.SwitchItemList.FirstOrDefault(w => w.Id == Id);
 
         private Light _light;
         private Light Light => _light ??= GameObjectFinder.FindByName(gameObject, "LightItem").GetComponent<Light>();
@@ -128,7 +128,7 @@ namespace AD3D_LightSolution.Runtime
         {
             SyncCode = GetSyncCodeFromClipboard();
             DbItem.SetSyncCode(SyncCode);
-            Plugin.Database.Save();
+            Plugin.ModData.Save();
             OnSyncLight?.Invoke();
         }
 
@@ -151,7 +151,7 @@ namespace AD3D_LightSolution.Runtime
             DbItem.SetEnable(IsEnabled);
             DbItem.SetIntensity(Intensity);
             DbItem.SetColor(LightColor);
-            Plugin.Database.Save();
+            Plugin.ModData.Save();
         }
 
         // Loading
@@ -169,20 +169,20 @@ namespace AD3D_LightSolution.Runtime
         {
             LightSwitch.OnStatusChanged -= OnLightSwitchStatusChanged;
             Plugin.Logger.LogInfo($"Destroying LightSource with ID: {Id}");
-            Plugin.Database.SwitchItemList.Remove(DbItem);
+            Plugin.ModData.SwitchItemList.Remove(DbItem);
         }
 
         private void InitDb()
         {
-            if (Plugin.Database.SwitchItemList == null)
+            if (Plugin.ModData.SwitchItemList == null)
             {
-                Plugin.Database.SwitchItemList = new List<DataItem>();
+                Plugin.ModData.SwitchItemList = new List<DataItem>();
             }
 
-            if (!Plugin.Database.SwitchItemList.Exists(w => w.Id == Id))
+            if (!Plugin.ModData.SwitchItemList.Exists(w => w.Id == Id))
             {
                 var newSwitch = new DataItem(Id, SwitchItemType.Source);
-                Plugin.Database.SwitchItemList.Add(newSwitch);
+                Plugin.ModData.SwitchItemList.Add(newSwitch);
             }
         }
     }
