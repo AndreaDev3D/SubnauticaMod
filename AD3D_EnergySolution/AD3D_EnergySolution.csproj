@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<TargetFramework>net472</TargetFramework>
 		<AssemblyName>AD3D_EnergySolution</AssemblyName>
-		<Version>1.0.1</Version>
+		<Version>2.0.0</Version>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<LangVersion>11</LangVersion>
 		<RootNamespace>AD3D_EnergySolution</RootNamespace>
@@ -27,7 +27,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\AD3D_Common\AD3D_Common.csproj" />
+	    <ProjectReference Include="..\AD3D_Common\AD3D_Common.csproj" />
 	</ItemGroup>
 
 	<Import Project="..\References.targets" />

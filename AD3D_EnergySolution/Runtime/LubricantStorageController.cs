@@ -9,8 +9,17 @@ using UnityEngine;
 
 namespace AD3D_EnergySolution.Runtime
 {
-    public class LubricantStorageController : StorageContainer
+    public class LubricantStorageController : StorageContainer, IProtoEventListener
     {
+        public string Id 
+        {
+            get
+            {
+                var identifier = gameObject.GetComponent<PrefabIdentifier>() ?? gameObject.GetComponentInParent<PrefabIdentifier>();
+                return identifier?.Id;
+            }
+        }
+
         public float LubricantAmount = 0f;
         private float _maxLubricantAmount = 1f;
         public Transform LubricantAmountObj;
@@ -24,6 +33,17 @@ namespace AD3D_EnergySolution.Runtime
             this.container.onAddItem += AddLubricant;
 
             LubricantAmountObj = transform.Find("LubricantAmount");
+
+            if (!string.IsNullOrEmpty(Id) && Plugin.ModData.LubricantLevels != null && Plugin.ModData.LubricantLevels.TryGetValue(Id, out float savedAmount))
+            {
+                LubricantAmount = savedAmount;
+            }
+
+            if (LubricantAmountObj != null && LubricantAmount >= 0)
+            {
+                SetLubricantAmount(0); // Pass 0 to just update the local scale visually
+                Plugin.Logger.LogError($"LubricantAmount OnStart: {LubricantAmount} for {Id}");
+            }
         }
 
         private bool IsAllowedToAdd(Pickupable pickupable, bool verbose) => pickupable.GetTechType() == TechType.Lubricant;
@@ -71,7 +91,50 @@ namespace AD3D_EnergySolution.Runtime
 
             LubricantAmountObj.transform.localScale = new Vector3(1, 1, LubricantAmount);
 
+            // Save to GameData
+            if (!string.IsNullOrEmpty(Id))
+            {
+                if (Plugin.ModData.LubricantLevels == null)
+                    Plugin.ModData.LubricantLevels = new Dictionary<string, float>();
+                
+                Plugin.ModData.LubricantLevels[Id] = LubricantAmount;
+            }
+
             return LubricantAmount;
+        }
+
+        // Saving
+        public void OnProtoSerialize(ProtobufSerializer serializer)
+        {
+            if (string.IsNullOrEmpty(Id)) return;
+
+            if (Plugin.ModData.LubricantLevels == null)
+            {
+                Plugin.ModData.LubricantLevels = new Dictionary<string, float>();
+            }
+
+            Plugin.ModData.LubricantLevels[Id] = LubricantAmount;
+            Plugin.ModData.Save();
+        }
+
+        // Loading
+        public void OnProtoDeserialize(ProtobufSerializer serializer)
+        {
+            Plugin.Logger.LogError($"OnDeserialize Called");
+
+            if (string.IsNullOrEmpty(Id))
+            {
+                Plugin.Logger.LogError($"OnDeserialize: {Id} missing");
+                return;
+            }
+            
+
+            if (Plugin.ModData.LubricantLevels != null && 
+                Plugin.ModData.LubricantLevels.TryGetValue(Id, out float savedAmount))
+            {
+                LubricantAmount = savedAmount;
+                Plugin.Logger.LogError($"LubricantAmount: {LubricantAmount} for {Id}");
+            }
         }
     }
 }
