@@ -1,25 +1,19 @@
 ﻿using AD3D_Common.Utils;
-using UnityEngine;
 using UnityEngine.UI;
 
 namespace AD3D_StorageSolution.Runtime
 {
     public class StorageController : StorageContainer
     {
-#if SN
-        private uGUI_ItemIcon Icon;
-#elif BZ
+        public static event System.Action OnStorageChanged;
+
         private Image Icon;
-#endif
+
         private bool _isInited;
 
         public void Start()
         {
-#if SN
-            FindIcon();
-#elif BZ
             Icon = gameObject.FindComponentByName<Image>("Icon");
-#endif
         }
 
         public void Update()
@@ -31,6 +25,10 @@ namespace AD3D_StorageSolution.Runtime
                     _isInited = true;
                     container.Sort();
                     SetIcon();
+
+                    // Refresh StorageMonitorController list
+                    container.onAddItem += (item) => OnStorageChanged?.Invoke();
+                    container.onRemoveItem += (item) => OnStorageChanged?.Invoke();
                 }
 
             }
@@ -42,25 +40,24 @@ namespace AD3D_StorageSolution.Runtime
             SetIcon();
         }
 
-        public void FindIcon()
-        {
-            if (Icon != null)
-                return;
-#if SN
-            var IconGO = gameObject.FindByName("Icon");
-            var img = IconGO.GetComponent<Image>();
-            Destroy(img);
-
-            Icon = IconGO.AddComponent<uGUI_ItemIcon>();
-            if (Icon != null)
-            {
-                Icon.transform.localScale = new Vector3(0.001f, 0.001f, 0.001f);
-            }
-#endif
-        }
-
         public void SetIcon()
         {
+            if(Icon == null)
+            {
+
+                Plugin.Logger.LogError($"SetIcon Icon is null");
+            }
+            if (container == null)
+            {
+
+                Plugin.Logger.LogError($"container Icon is null");
+            }
+            if (container == null)
+            {
+
+                Plugin.Logger.LogError($"container.itemsMap is null");
+            }
+
             if (Icon != null && (container != null || container.itemsMap != null))
             {
                 var firstItem = container.itemsMap[0, 0];
@@ -68,11 +65,8 @@ namespace AD3D_StorageSolution.Runtime
                 {
                     return;
                 }
-#if SN
-                Icon.SetForegroundSprite(SpriteManager.Get(firstItem.techType));
-#elif BZ
                 Icon.sprite = SpriteManager.Get(firstItem.techType);
-#endif
+
             }
             else
             {
@@ -94,8 +88,14 @@ namespace AD3D_StorageSolution.Runtime
             if ((bool)(UnityEngine.Object)component && !component.constructed)
                 return;
 
+            var firstItem = container.itemsMap[0, 0];
+            var extraText = "";
+            if (firstItem == null)
+            {
+                extraText = $"\n {container.GetCount(firstItem.techType)}/{container.count}";
+            }
 
-            HandReticle.main.SetText(HandReticle.TextType.Hand, $"{this.hoverText}", true, GameInput.Button.LeftHand);
+            HandReticle.main.SetText(HandReticle.TextType.Hand, $"{this.hoverText}{extraText}", true, GameInput.Button.LeftHand);
             HandReticle.main.SetText(HandReticle.TextType.HandSubscript, this.IsEmpty() ? "Empty" : string.Empty, true);
             HandReticle.main.SetIcon(HandReticle.IconType.Hand);
         }

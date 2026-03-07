@@ -68,6 +68,9 @@ namespace AD3D_StorageSolution
                 $"{_baseDescription} Store 90 items in a reduced space."
                 , new Vector2Int(9, 10), false)
                 .Register();
+
+            new StorageMonitor()
+                .Register();
         }
     }
 }

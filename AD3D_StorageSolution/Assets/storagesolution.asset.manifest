@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 3342465323
+CRC: 4089324779
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: fd74990fdd852a1f3acdd3ec74c216b1
+    Hash: aebce41339c2eac323797126746bccd8
   TypeTreeHash:
     serializedVersion: 2
-    Hash: c0813286aee66ae41320d8e397b1519a
+    Hash: cfc3db9b81ec8d7bc044952c176a0139
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -28,12 +28,22 @@ ClassTypes:
 - Class: 65
   Script: {instanceID: 0}
 - Class: 114
+  Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
 - Class: 115
+  Script: {instanceID: 0}
+- Class: 128
   Script: {instanceID: 0}
 - Class: 213
   Script: {instanceID: 0}
@@ -45,13 +55,18 @@ ClassTypes:
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
+- Assets/AlterraVendingMachine/Prefab/AlterraVendingMachine.prefab
 - Assets/StorageSolution/Prefab/QuantumStorage_floor_L.prefab
 - Assets/StorageSolution/Icons/QuantumStorage_wall_S.png
+- Assets/AlterraVendingMachine/Prefab/ItemButtonPrefab.prefab
 - Assets/StorageSolution/Icons/QuantumStorage_wall_L.png
 - Assets/StorageSolution/Icons/QuantumStorage_floor_L.png
 - Assets/StorageSolution/Icons/QuantumStorage_floor_S.png
 - Assets/StorageSolution/Prefab/QuantumStorage_floor_S.prefab
+- Assets/AlterraVendingMachine/Prefab/StorageMonitor.prefab
 - Assets/StorageSolution/Prefab/QuantumStorage.prefab
+- Assets/StorageSolution/Icons/StorageMonitor.png
+- Assets/AlterraVendingMachine/Icons/AlterraVendingMachine.png
 - Assets/StorageSolution/Prefab/QuantumStorage_wall_L.prefab
 - Assets/StorageSolution/Prefab/QuantumStorage_wall_S.prefab
 Dependencies: []
