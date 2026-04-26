@@ -53,7 +53,10 @@ namespace AD3D_StorageSolution.Runtime
         }
 
         private void Start()
-        {            
+        {
+            foreach (var rb in GetComponentsInChildren<Rigidbody>(true))
+                Destroy(rb);
+
             panelwidth = InnerPanelRect.rect.width;
             stepVector = new Vector3(panelwidth / GridX, 0);
             

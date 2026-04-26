@@ -63,6 +63,9 @@ namespace AD3D_StorageSolution.Items.Storage
             SetupConstructable(prefab);
             SetupStorageMonitor(prefab, prefabItem);
 
+            foreach (var rb in prefab.GetComponentsInChildren<Rigidbody>(true))
+                UnityEngine.Object.DestroyImmediate(rb);
+
             return prefab;
         }
 
@@ -76,7 +79,7 @@ namespace AD3D_StorageSolution.Items.Storage
             constructable.allowedOutside = false;
             constructable.allowedInSub = true;
             constructable.deconstructionAllowed = true;
-            constructable.forceUpright = true;
+            constructable.forceUpright = false;
             constructable.rotationEnabled = true;
         }
 

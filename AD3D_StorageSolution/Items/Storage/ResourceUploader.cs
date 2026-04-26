@@ -1,4 +1,4 @@
-﻿using AD3D_StorageSolution.Runtime;
+using AD3D_StorageSolution.Runtime;
 using Nautilus.Assets;
 using Nautilus.Assets.Gadgets;
 using Nautilus.Crafting;
@@ -12,25 +12,15 @@ using static CraftData;
 
 namespace AD3D_StorageSolution.Items.Storage
 {
-    public class StorageItem
+    public class ResourceUploader
     {
-        public Vector2Int StorageSize { get; }
-
-        public bool IsOnFloor;
-
         public PrefabInfo PrefabInfo { get; }
 
-        private string _displayName;
-
-        public StorageItem(string classID, string friendlyName, string shortDescription, Vector2Int storageSize, bool isOnFloor)
+        public ResourceUploader()
         {
-            StorageSize = storageSize;
-            IsOnFloor = isOnFloor;
-            _displayName = friendlyName;
-
             PrefabInfo = PrefabInfo
-            .WithTechType(classID, friendlyName, shortDescription, unlockAtStart: true)
-            .WithIcon(ImageUtils.LoadSpriteFromTexture(Plugin.AssetBundle.LoadAsset<Texture2D>($"{classID}.png")));
+                .WithTechType("AD3D_ResourceUploader", "Resource Uploader", "Automatically uploads items to filtered storage on close.", unlockAtStart: true)
+                .WithIcon(ImageUtils.LoadSpriteFromTexture(Plugin.AssetBundle.LoadAsset<Texture2D>("ResourceUploader.png")));
         }
 
         public void Register()
@@ -44,9 +34,8 @@ namespace AD3D_StorageSolution.Items.Storage
                 craftAmount = 1,
                 Ingredients =
                 {
-                    new Ingredient(TechType.Titanium, 4),
-                    new Ingredient(TechType.Quartz, 2),
-                    new Ingredient(TechType.Copper, 2),
+                    new Ingredient(TechType.Titanium, 2),
+                    new Ingredient(TechType.Copper, 1),
                 },
             };
 
@@ -62,7 +51,7 @@ namespace AD3D_StorageSolution.Items.Storage
 
         private GameObject GetAssetBundlePrefab()
         {
-            var prefab = Plugin.AssetBundle.LoadAsset<GameObject>($"{PrefabInfo.ClassID}.prefab");
+            var prefab = Plugin.AssetBundle.LoadAsset<GameObject>("ResourceUploader.prefab");
             PrefabUtils.AddBasicComponents(prefab, PrefabInfo.ClassID, PrefabInfo.TechType, LargeWorldEntity.CellLevel.Medium);
             MaterialUtils.ApplySNShaders(prefab);
 
@@ -80,38 +69,33 @@ namespace AD3D_StorageSolution.Items.Storage
             var rootModel = prefab.SearchChild("model");
             var constructable = PrefabUtils.AddConstructable(prefab, PrefabInfo.TechType, ConstructableFlags.Inside, rootModel);
             constructable.allowedOnConstructables = true;
-            constructable.allowedOnGround = IsOnFloor;
-            constructable.allowedOnWall = !IsOnFloor;
-            constructable.allowedOutside = false;
+            constructable.allowedOnGround = false;
+            constructable.allowedOnWall = true;
+            constructable.allowedOutside = true;
             constructable.allowedInSub = true;
             constructable.deconstructionAllowed = true;
-            constructable.forceUpright = IsOnFloor;
+            constructable.forceUpright = false;
             constructable.rotationEnabled = true;
-#if SN
-            constructable.ExcludeFromSubParentRigidbody();
-#endif
         }
 
         private void SetupStorage(GameObject prefab)
         {
             var wasActive = prefab.activeSelf;
-
             if (wasActive) prefab.SetActive(false);
 
             var storageRoot = prefab.FindChild("StorageRoot");
-
             var childObjectIdentifier = storageRoot.AddComponent<ChildObjectIdentifier>();
             childObjectIdentifier.ClassId = $"{PrefabInfo.ClassID}Container";
 
             var container = prefab.AddComponent<StorageContainer>();
             container.prefabRoot = prefab;
-            container.width = StorageSize.x;
-            container.height = StorageSize.y;
+            container.width = 4;
+            container.height = 4;
             container.storageRoot = childObjectIdentifier;
             container.preventDeconstructionIfNotEmpty = true;
-            container.hoverText = $"Open {_displayName}";
+            container.hoverText = "Deposit to Uploader";
 
-            prefab.AddComponent<StorageController>().CopyComponent(container);
+            prefab.AddComponent<ResourceUploaderController>().CopyComponent(container);
             
             UnityEngine.Object.DestroyImmediate(container);
 

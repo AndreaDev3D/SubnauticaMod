@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 4089324779
+CRC: 4242449182
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: aebce41339c2eac323797126746bccd8
+    Hash: d59e2797d30056ae05c0fb7737a7fe0a
   TypeTreeHash:
     serializedVersion: 2
     Hash: cfc3db9b81ec8d7bc044952c176a0139
@@ -55,18 +55,29 @@ ClassTypes:
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
+- Assets/StorageSolution/Icons/ResourceUploader.png
 - Assets/AlterraVendingMachine/Prefab/AlterraVendingMachine.prefab
 - Assets/StorageSolution/Prefab/QuantumStorage_floor_L.prefab
 - Assets/StorageSolution/Icons/QuantumStorage_wall_S.png
 - Assets/AlterraVendingMachine/Prefab/ItemButtonPrefab.prefab
 - Assets/StorageSolution/Icons/QuantumStorage_wall_L.png
 - Assets/StorageSolution/Icons/QuantumStorage_floor_L.png
+- Assets/StorageSolution/Prefab/QuantumStorage_wall_M.prefab
+- Assets/StorageSolution/Prefab/QuantumStorage_floor_XS.prefab
+- Assets/StorageSolution/Icons/QuantumStorage_floor_Cabinet_S.png
+- Assets/StorageSolution/Icons/QuantumStorage_floor_XS.png
+- Assets/StorageSolution/Icons/QuantumStorage_wall_M.png
+- Assets/StorageSolution/Prefab/ResourceUploader.prefab
 - Assets/StorageSolution/Icons/QuantumStorage_floor_S.png
+- Assets/StorageSolution/Icons/ResourceUploader4.png
 - Assets/StorageSolution/Prefab/QuantumStorage_floor_S.prefab
 - Assets/AlterraVendingMachine/Prefab/StorageMonitor.prefab
+- Assets/StorageSolution/Prefab/QuantumStorage_floor_Cabinet_L.prefab
 - Assets/StorageSolution/Prefab/QuantumStorage.prefab
 - Assets/StorageSolution/Icons/StorageMonitor.png
 - Assets/AlterraVendingMachine/Icons/AlterraVendingMachine.png
 - Assets/StorageSolution/Prefab/QuantumStorage_wall_L.prefab
+- Assets/StorageSolution/Icons/QuantumStorage_floor_Cabinet_L.png
+- Assets/StorageSolution/Prefab/QuantumStorage_floor_Cabinet_S.prefab
 - Assets/StorageSolution/Prefab/QuantumStorage_wall_S.prefab
 Dependencies: []

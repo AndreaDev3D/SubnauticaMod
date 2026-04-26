@@ -1,4 +1,5 @@
 ﻿using AD3D_Common;
+using AD3D_StorageSolution.Data;
 using AD3D_StorageSolution.Items.Storage;
 using BepInEx;
 using BepInEx.Logging;
@@ -18,10 +19,13 @@ namespace AD3D_StorageSolution
         private static Assembly Assembly { get; } = Assembly.GetExecutingAssembly();
 
         public static AssetBundle AssetBundle { get; private set; }
+        public static ModData ModData { get; private set; }
 
         private void Awake()
         {
             AssetBundle = Helper.GetAssetBundle(Assembly.Location, "storagesolution.asset");
+            
+            ModData = Nautilus.Handlers.SaveDataHandler.RegisterSaveDataCache<ModData>();
 
             // set project-scoped logger instance
             Logger = base.Logger;
@@ -55,10 +59,26 @@ namespace AD3D_StorageSolution
 
 
             new StorageItem(
+                "QuantumStorage_floor_XS",
+                "Small Quantum Crate",
+                $"{_baseDescription} Store 16 items in a reduced space."
+                , new Vector2Int(4, 4), true)
+                .Register();
+
+
+            new StorageItem(
                 "QuantumStorage_wall_S",
                 "Quantum Storage",
                 $"{_baseDescription} Store 64 items in a reduced space."
                 , new Vector2Int(8, 8), false)
+                .Register();
+
+
+            new StorageItem(
+                "QuantumStorage_wall_M",
+                "Medium Quantum Storage",
+                $"{_baseDescription} Store 8 items in a reduced space."
+                , new Vector2Int(1, 8), false)
                 .Register();
 
 
@@ -69,7 +89,26 @@ namespace AD3D_StorageSolution
                 , new Vector2Int(9, 10), false)
                 .Register();
 
+
+            new StorageItem(
+                "QuantumStorage_floor_Cabinet_S",
+                "Quantum Cabinet",
+                $"{_baseDescription} Store 64 items in a reduced space."
+                , new Vector2Int(8, 8), true)
+                .Register();
+
+
+            new StorageItem(
+                "QuantumStorage_floor_Cabinet_L",
+                "Large Quantum Cabinet",
+                $"{_baseDescription} Store 90 items in a reduced space."
+                , new Vector2Int(9, 10), true)
+                .Register();
+
             new StorageMonitor()
+                .Register();
+
+            new ResourceUploader()
                 .Register();
         }
     }
