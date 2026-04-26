@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 4159790684
+CRC: 1931855947
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 71fd5ed441e282372b88849b112fc69d
+    Hash: 92a9424071bdbe9dbb7e11fa01a9408a
   TypeTreeHash:
     serializedVersion: 2
-    Hash: cd5e24156bf84321f27f53a72a298b4e
+    Hash: 4fabd6fc1aa8d5e0dcb035f0416409d2
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -32,9 +32,9 @@ ClassTypes:
 - Class: 83
   Script: {instanceID: 0}
 - Class: 114
-  Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-- Class: 114
   Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
 - Class: 114
@@ -56,7 +56,6 @@ ClassTypes:
 SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/Resources/Icons/Main_BG.png
-- Assets/PrefabKit/Models/PrefabKit.mat
 - Assets/Resources/Icons/Battery.png
 - Assets/EnergySolution/Icons/PowerSolarPanel.png
 - Assets/EnergySolution/Prefabs/PowerSolarPanel.prefab

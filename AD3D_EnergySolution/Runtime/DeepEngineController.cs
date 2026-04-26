@@ -20,7 +20,6 @@ namespace AD3D_EnergySolution.BO.Runtime
         public Text lblDepth;
         public Text lblLubricant;
 
-        public float PowerMultiplier = 2f;
         public bool MakesNoise;
         public AudioClip Engine_SFX;
 
@@ -36,13 +35,7 @@ namespace AD3D_EnergySolution.BO.Runtime
 
         public override void Start()
         {
-            Plugin.ModConfig.OnConfigChanged += () =>
-            {
-                SetEmittedRate();
-            };
-
             SetupAudio();
-            SetEmittedRate();
             lblDepth.text = $"{Mathf.RoundToInt(Mathf.Abs(this.gameObject.transform.position.y)).ToString()} m";
 
             base.Start();
@@ -77,9 +70,10 @@ namespace AD3D_EnergySolution.BO.Runtime
             {
                 var power = Mathf.RoundToInt(powerSource.GetPower());
                 var powerMax = Mathf.RoundToInt(powerSource.GetMaxPower());
+                var scalar = GetRechargeScalar();
                 lblStatus.text = $"<color=green>POWERED</color>";
                 lblBattery.text = $"Power {power}/{powerMax} Kw";
-                lblEmission.text = $"{Math.Round(CurrentEmitRate, 2)} w/sec";
+                lblEmission.text = $"{Math.Round(CurrentEmitRate * scalar, 2)} w/sec ({scalar:P0})";
             }
             else
             {
@@ -104,14 +98,6 @@ namespace AD3D_EnergySolution.BO.Runtime
 
             if (!AudioSource.isPlaying)
                 AudioSource.Play();
-        }
-
-        private void SetEmittedRate()
-        {
-            var y = this.gameObject.transform.position.y;
-            var baseEmission = 1.0f;
-            var multiplaier = 4.0f * PowerMultiplier;
-            CurrentEmitRate = y >= 0 ? 0.0f : baseEmission + ((y * -1) / 1000.0f) * multiplaier;
         }
 
         //public override void OnHandHover(GUIHand hand)

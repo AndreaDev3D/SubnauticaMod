@@ -20,29 +20,36 @@ namespace AD3D_EnergySolution.Runtime
         public Constructable Constructable => _constructable ??= gameObject.GetComponent<Constructable>();
 
         public int MaxPowerAllowed = 750;
-        private float maxDepth = 200f;
+        public float MinDepth = -5f;
+        public float MaxDepth = 50f;
+        public bool IsSunSusceptible = true;
         public float CurrentEmitRate = 0.25f;
         public float CurrentEmitIntervalSec = 2.0f;
         private float biomeSunlightScale = 1f;
 
-        public AnimationCurve depthCurve;
-
         public LubricantStorageController lubricantStorageController;
 
-        private float GetDepthScalar() => this.depthCurve.Evaluate(Mathf.Clamp01((this.maxDepth - Ocean.GetDepthOf(this.gameObject)) / this.maxDepth));        
+        // Linear interp on world-space Y between MinDepth (0%) and MaxDepth (100%).
+        // Works for both directions: Wind/Solar use MaxDepth > MinDepth (high = strong);
+        // Deep Engine uses MaxDepth < MinDepth (deep = strong).
+        private float GetDepthScalar()
+        {
+            var range = MaxDepth - MinDepth;
+            if (Mathf.Approximately(range, 0f))
+                return 0f;
+            return Mathf.Clamp01((gameObject.transform.position.y - MinDepth) / range);
+        }
 
         private float GetSunScalar() => DayNightCycle.main.GetLocalLightScalar() * this.biomeSunlightScale;
-        
-        private float GetRechargeScalar() => this.GetDepthScalar() * this.GetSunScalar();
+
+        protected float GetRechargeScalar()
+        {
+            var depth = GetDepthScalar();
+            return IsSunSusceptible ? depth * GetSunScalar() : depth;
+        }
 
         public virtual void Start()
         {
-            // Manually build the curve
-            depthCurve = new AnimationCurve();
-            depthCurve.AddKey(0f, 0f);
-            depthCurve.AddKey(new Keyframe(0.5f, 0.5f, 1.646463f, 1.646463f, 0.3333333f, 0.3333333f));
-            depthCurve.AddKey(new Keyframe(1f, 1f, -2.087208E-06f, -2.087208E-06f, 0.3333333f, 0.3333333f));
-
             powerRelay = gameObject.GetComponent<PowerRelay>();
             powerSource = gameObject.GetComponent<PowerSource>();
 
@@ -62,7 +69,8 @@ namespace AD3D_EnergySolution.Runtime
             {
                 if (Constructable.constructed)
                 {
-                    powerRelay.ModifyPower(CurrentEmitRate, out float num);
+                    var rate = CurrentEmitRate * GetRechargeScalar();
+                    powerRelay.ModifyPower(rate, out float num);
 
                     if (lubricantStorageController != null)
                     {
@@ -88,7 +96,7 @@ namespace AD3D_EnergySolution.Runtime
             var text = "";
             if (IsEnabled)
             {
-                var recharge = Mathf.RoundToInt(this.GetRechargeScalar());
+                var recharge = this.GetRechargeScalar();
                 var power = Mathf.RoundToInt(this.powerSource.GetPower());
                 var maxPower = Mathf.RoundToInt(this.powerSource.GetMaxPower());
                 text = $"Efficiency: {recharge:P0} \n Charge: {power}/{maxPower} kW";

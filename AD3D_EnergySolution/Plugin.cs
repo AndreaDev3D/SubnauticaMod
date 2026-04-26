@@ -52,7 +52,7 @@ namespace AD3D_EnergySolution
             var solarPanelPrefab = new GenericPowerPrefab(
                 classID:"PowerSolarPanel",
                 friendlyName: "Power Solar Panel",
-                shortDescription: "A high efficiency Solar Panel that produce 0.125 W/sec.",
+                shortDescription: "A high efficiency Solar Panel that produce 0.125 W/sec. Works best between -10 and 10 (peaks near the surface).",
                 recipeData: new RecipeData(
                     new Ingredient(TechType.Titanium, 2),
                     new Ingredient(TechType.WiringKit, 1))
@@ -64,12 +64,15 @@ namespace AD3D_EnergySolution
                 pow.MaxPowerAllowed = 250;
                 pow.CurrentEmitRate = 0.25f;
                 pow.CurrentEmitIntervalSec = 2f;
+                pow.MinDepth = -10f;
+                pow.MaxDepth = 10f;
+                pow.IsSunSusceptible = true;
             };
 
             var solarPanelFloorPrefab = new GenericPowerPrefab(
                 classID: "PowerSolarPanel_floor",
                 friendlyName: "Power Solar Panel Flat",
-                shortDescription: "A high efficiency Solar Panel that produce 0.125 W/sec.",
+                shortDescription: "A high efficiency Solar Panel that produce 0.125 W/sec. Works best between -10 and 10 (peaks near the surface).",
                 recipeData: new RecipeData(
                     new Ingredient(TechType.Titanium, 2),
                     new Ingredient(TechType.WiringKit, 1))
@@ -81,12 +84,15 @@ namespace AD3D_EnergySolution
                 pow.MaxPowerAllowed = 250;
                 pow.CurrentEmitRate = 0.25f;
                 pow.CurrentEmitIntervalSec = 2f;
+                pow.MinDepth = -10f;
+                pow.MaxDepth = 10f;
+                pow.IsSunSusceptible = true;
             };
 
             var powerWindTurbinePrefab = new GenericPowerPrefab(
                 classID: "PowerWindTurbine",
                 friendlyName: "Power Wind Turbine",
-                shortDescription: "High efficiency Wind Turbine that produce 0.25 W/sec.",
+                shortDescription: "High efficiency Wind Turbine that produce 0.25 W/sec. Works best between -5 and 10 (higher = stronger).",
                 recipeData: new RecipeData(
                     new Ingredient(TechType.Titanium, 3),
                     new Ingredient(TechType.WiringKit, 1))
@@ -98,12 +104,15 @@ namespace AD3D_EnergySolution
                 pow.MaxPowerAllowed = 500;
                 pow.CurrentEmitRate = 0.5f;
                 pow.CurrentEmitIntervalSec = 2f;
+                pow.MinDepth = -5f;
+                pow.MaxDepth = 10f;
+                pow.IsSunSusceptible = true;
             };
 
             var deepEnginePrefab = new GenericPowerPrefab(
                 classID: "DeepEngine",
                 friendlyName: "Deep Engine v2",
-                shortDescription: "High efficiency electric generator that produce 750w of energy in deep water.",
+                shortDescription: "High efficiency electric generator that produce 750w of energy in deep water. Works best between -5 and -200 (deeper = stronger).",
                 recipeData: new RecipeData(
                     new Ingredient(TechType.Titanium, 5),
                     new Ingredient(TechType.WiringKit, 1))
@@ -117,7 +126,9 @@ namespace AD3D_EnergySolution
                 pow.MaxPowerAllowed = 750;
                 pow.CurrentEmitRate = 0.75f;
                 pow.CurrentEmitIntervalSec = 2f;
-
+                pow.MinDepth = -5f;
+                pow.MaxDepth = -200f;
+                pow.IsSunSusceptible = false;
             };
         }
     }
