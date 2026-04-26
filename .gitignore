@@ -68,3 +68,5 @@ packages
 */bin
 */obj
 Downloads/*
+.claude/settings.local.json
+CLAUDE.md
