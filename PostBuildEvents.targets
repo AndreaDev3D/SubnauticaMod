@@ -9,7 +9,7 @@
     <ModFolder Condition="'$(ModFolder)' == '' and '$(Configuration)' == 'BZ'">D:\Steam\steamapps\common\SubnauticaZero\BepInEx\plugins</ModFolder>
   </PropertyGroup>
 
-  <Target Name="CustomPostBuild" AfterTargets="Build">
+  <Target Name="CustomPostBuild" AfterTargets="Build" Condition="'$(GITHUB_ACTIONS)' != 'true'">
     <Exec Command="
 mkdir &quot;$(ModFolder)\$(TargetName).$(Configuration)&quot;
 mkdir &quot;$(ModFolder)\$(TargetName).$(Configuration)\Assets&quot;
@@ -35,5 +35,28 @@ if exist &quot;%SEVENZIP%&quot; (
   echo WARNING: 7z.exe not found at %SEVENZIP%. Skipping zip creation.
 )
     " />
+  </Target>
+
+  <!-- CI packaging: GitHub Actions has no game install and no 7-Zip, so CustomPostBuild
+       is skipped there. This stages the exact same payload the local zip ships (mod DLL +
+       AD3D_Common.dll at the root, Assets/*.asset|*.manifest|*.png under Assets/) into a
+       repo-relative folder the workflow zips. SolutionDir is passed explicitly by the
+       workflow because a per-csproj build doesn't set it. -->
+  <Target Name="StageForPackaging" AfterTargets="Build" Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <PropertyGroup>
+      <CiStageDir>$(SolutionDir)artifacts\$(Configuration)\$(TargetName).$(Configuration)</CiStageDir>
+    </PropertyGroup>
+    <ItemGroup>
+      <CiBinary Include="$(TargetPath)" />
+      <CiBinary Include="$(TargetDir)AD3D_Common.dll" Condition="Exists('$(TargetDir)AD3D_Common.dll')" />
+      <CiModJson Include="$(ProjectDir)mod.json" Condition="Exists('$(ProjectDir)mod.json')" />
+      <CiAsset Include="$(ProjectDir)Assets\*.asset" />
+      <CiAsset Include="$(ProjectDir)Assets\*.manifest" />
+      <CiAsset Include="$(ProjectDir)Assets\*.png" />
+    </ItemGroup>
+    <RemoveDir Directories="$(CiStageDir)" />
+    <Copy SourceFiles="@(CiBinary)" DestinationFolder="$(CiStageDir)" />
+    <Copy SourceFiles="@(CiModJson)" DestinationFolder="$(CiStageDir)" Condition="'@(CiModJson)' != ''" />
+    <Copy SourceFiles="@(CiAsset)" DestinationFolder="$(CiStageDir)\Assets" Condition="'@(CiAsset)' != ''" />
   </Target>
 </Project>

@@ -14,6 +14,8 @@
 /[Mm]emoryCaptures/
 /[Dd]ownloads/
 /[Dd]ownload/
+/[Aa]rtifacts/
+/dist/
 
 # Never ignore Asset meta data
 !/[Aa]ssets/**/*.meta
