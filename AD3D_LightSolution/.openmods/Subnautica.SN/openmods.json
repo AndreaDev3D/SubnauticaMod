@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 2,
+  "slug": "ad3d-light-solution-sn",
+  "name": "AD3D Light Solution (Subnautica)",
+  "supportedGameId": 1,
+  "releaseAssets": ["AD3D_LightSolution.SN.zip"],
+  "primaryAsset": "AD3D_LightSolution.SN.zip",
+  "readme": "README.md",
+  "thumbnail": "Screenshot_10.png",
+  "media": [
+    { "type": "video", "url": "https://youtube.com/shorts/4vQk2nVvaQU?si=vsc6jnt-ZAGDhh29" },
+    { "type": "image", "url": "Screenshot_10.png" },
+    { "type": "image", "url": "Screenshot_11.png" },
+    { "type": "image", "url": "Screenshot_9.png" },
+    { "type": "image", "url": "light_off.jpg" },
+    { "type": "image", "url": "light_on.jpg" }
+  ],
+  "install": {
+    "path": "BepInEx/plugins"
+  },
+  "add-on-of": 26,
+  "dependencies": {
+    "v0.1-alpha": [
+      { "modId": 31, "fromRelease": "v6.0.0-pre.1" },
+      { "modId": 30 }
+    ],
+    "v2.0.3": [
+      { "modId": 31, "fromRelease": "v6.0.0-pre.1" },
+      { "modId": 30 }
+    ]
+  }
+}

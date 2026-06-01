@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 2,
+  "slug": "ad3d-storage-solution-bz",
+  "name": "AD3D StorageSolution Mod (Below Zero)",
+  "supportedGameId": 2,
+  "releaseAssets": ["AD3D_StorageSolution.BZ.zip"],
+  "primaryAsset": "AD3D_StorageSolution.BZ.zip",
+  "readme": "README.md",
+  "thumbnail": "all_items.jpg",
+  "media": [
+    { "type": "video", "url": "https://youtube.com/shorts/C-MoEBcvEBM?si=K9ZbNqleTI5rIwvp" },
+    { "type": "image", "url": "all_items.jpg" },
+    { "type": "image", "url": "thumbnail.png" },
+    { "type": "image", "url": "builder.png" },
+    { "type": "image", "url": "inventory.png" }
+  ],
+  "install": {
+    "path": "BepInEx/plugins"
+  },
+  "dependencies": {
+    "v2.0.0": [ { "modId": 30 } ],
+    "v2.0.5": [ { "modId": 30 } ]
+  }
+}

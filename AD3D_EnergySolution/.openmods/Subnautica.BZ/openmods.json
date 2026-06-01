@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 2,
+  "slug": "ad3d-energy-solution-bz",
+  "name": "AD3D EnergySolution Mod (Below Zero)",
+  "supportedGameId": 2,
+  "releaseAssets": ["AD3D_EnergySolution.BZ.zip"],
+  "primaryAsset": "AD3D_EnergySolution.BZ.zip",
+  "readme": "README.md",
+  "thumbnail": "Thumbnail.png",
+  "media": [
+    { "type": "image", "url": "DeepEnginev2.png" },
+    { "type": "image", "url": "Thumbnail.png" },
+    { "type": "image", "url": "WindTurbine.png" }
+  ],
+  "install": {
+    "path": "BepInEx/plugins"
+  },
+  "add-on-of": 26,
+  "dependencies": {
+    "v2.0.0": [ { "modId": 30, "release": "1.0.0-pre.48" } ],
+    "v2.0.3": [ { "modId": 30, "release": "1.0.0-pre.50" } ],
+    "v2.0.4": [ { "modId": 30, "release": "1.0.0-pre.50" } ],
+    "v2.0.5": [ { "modId": 30, "release": "1.0.0-pre.50" } ]
+  }
+}
