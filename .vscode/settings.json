@@ -1,0 +1,10 @@
+{
+  // Validate every OpenMods manifest in the solution against the published schema,
+  // even if the file itself is missing the "$schema" pointer.
+  "json.schemas": [
+    {
+      "fileMatch": ["**/openmods.json", "**/openmods-*.json"],
+      "url": "https://openmods.net/manifest.schema.json"
+    }
+  ]
+}

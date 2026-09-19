@@ -1,4 +1,5 @@
 {
+  "$schema": "https://openmods.net/manifest.schema.json",
   "schemaVersion": 2,
   "slug": "ad3d-storage-solution-sn",
   "name": "AD3D StorageSolution Mod (Subnautica)",
