@@ -3,6 +3,7 @@
   "schemaVersion": 2,
   "slug": "ad3d-storage-solution-bz",
   "name": "AD3D StorageSolution Mod (Below Zero)",
+  "description": "Quantum crates, cabinets and wall storage, plus a storage monitor and a resource uploader.",
   "supportedGameId": 2,
   "releaseAssets": ["AD3D_StorageSolution.BZ.zip"],
   "primaryAsset": "AD3D_StorageSolution.BZ.zip",

@@ -3,6 +3,7 @@
   "schemaVersion": 2,
   "slug": "ad3d-light-solution-bz",
   "name": "AD3D Light Solution (Below Zero)",
+  "description": "Buildable indoor and outdoor lights, with a central switch to recolour and dim every fixture in range.",
   "supportedGameId": 2,
   "releaseAssets": ["AD3D_LightSolution.BZ.zip"],
   "primaryAsset": "AD3D_LightSolution.BZ.zip",

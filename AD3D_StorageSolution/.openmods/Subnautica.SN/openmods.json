@@ -3,6 +3,7 @@
   "schemaVersion": 2,
   "slug": "ad3d-storage-solution-sn",
   "name": "AD3D StorageSolution Mod (Subnautica)",
+  "description": "Quantum crates, cabinets and wall storage, plus a storage monitor and a resource uploader.",
   "supportedGameId": 1,
   "releaseAssets": ["AD3D_StorageSolution.SN.zip"],
   "primaryAsset": "AD3D_StorageSolution.SN.zip",

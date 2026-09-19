@@ -3,6 +3,7 @@
   "schemaVersion": 2,
   "slug": "ad3d-energy-solution-sn",
   "name": "AD3D EnergySolution Mod (Subnautica)",
+  "description": "Solar panels, a wind turbine and a depth-scaling Deep Engine to power bases the sun never reaches.",
   "supportedGameId": 1,
   "releaseAssets": ["AD3D_EnergySolution.SN.zip"],
   "primaryAsset": "AD3D_EnergySolution.SN.zip",

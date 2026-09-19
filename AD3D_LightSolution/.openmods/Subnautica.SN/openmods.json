@@ -3,6 +3,7 @@
   "schemaVersion": 2,
   "slug": "ad3d-light-solution-sn",
   "name": "AD3D Light Solution (Subnautica)",
+  "description": "Buildable indoor and outdoor lights, with a central switch to recolour and dim every fixture in range.",
   "supportedGameId": 1,
   "releaseAssets": ["AD3D_LightSolution.SN.zip"],
   "primaryAsset": "AD3D_LightSolution.SN.zip",
