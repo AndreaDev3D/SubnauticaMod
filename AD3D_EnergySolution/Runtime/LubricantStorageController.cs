@@ -42,7 +42,7 @@ namespace AD3D_EnergySolution.Runtime
             if (LubricantAmountObj != null && LubricantAmount >= 0)
             {
                 SetLubricantAmount(0); // Pass 0 to just update the local scale visually
-                Plugin.Logger.LogError($"LubricantAmount OnStart: {LubricantAmount} for {Id}");
+                Plugin.Logger.LogInfo($"Lubricant start: {LubricantAmount} for id '{Id}'");
             }
         }
 
@@ -89,7 +89,8 @@ namespace AD3D_EnergySolution.Runtime
             }
 
 
-            LubricantAmountObj.transform.localScale = new Vector3(1, 1, LubricantAmount);
+            if (LubricantAmountObj != null)
+                LubricantAmountObj.localScale = new Vector3(1, 1, LubricantAmount);
 
             // Save to GameData
             if (!string.IsNullOrEmpty(Id))
@@ -120,11 +121,11 @@ namespace AD3D_EnergySolution.Runtime
         // Loading
         public void OnProtoDeserialize(ProtobufSerializer serializer)
         {
-            Plugin.Logger.LogError($"OnDeserialize Called");
+            Plugin.Logger.LogInfo($"Lubricant deserialize for id '{Id}'");
 
             if (string.IsNullOrEmpty(Id))
             {
-                Plugin.Logger.LogError($"OnDeserialize: {Id} missing");
+                Plugin.Logger.LogInfo("Lubricant deserialize: no prefab id yet, skipping restore.");
                 return;
             }
             
@@ -133,7 +134,7 @@ namespace AD3D_EnergySolution.Runtime
                 Plugin.ModData.LubricantLevels.TryGetValue(Id, out float savedAmount))
             {
                 LubricantAmount = savedAmount;
-                Plugin.Logger.LogError($"LubricantAmount: {LubricantAmount} for {Id}");
+                Plugin.Logger.LogInfo($"Lubricant restored: {LubricantAmount} for id '{Id}'");
             }
         }
     }
