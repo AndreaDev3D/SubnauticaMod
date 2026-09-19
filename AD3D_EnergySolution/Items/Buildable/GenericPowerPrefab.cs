@@ -36,9 +36,7 @@ namespace AD3D_EnergySolution.Items.Buildable
             var customPrefab = new CustomPrefab(PrefabInfo);
             customPrefab.SetGameObject(GetAssetBundlePrefab);
 
-            customPrefab.SetRecipe(RecipeData)
-                .WithFabricatorType(CraftTree.Type.Constructor)
-                .WithStepsToFabricatorTab("Exterior Modules");
+            customPrefab.SetRecipe(RecipeData);
 
             customPrefab.SetEquipment(EquipmentType.Hand);
             customPrefab.SetPdaGroupCategory(TechGroup.ExteriorModules, TechCategory.ExteriorModule);
@@ -66,8 +64,6 @@ namespace AD3D_EnergySolution.Items.Buildable
             SetupAdditionalComponents(prefab, solarPanelPrefab);
             //SetupMaterials(prefab);
             SetupLubricantController(prefab);
-
-            prefab.SetActive(true);
 
             clonePrefab.Set(prefab);
 

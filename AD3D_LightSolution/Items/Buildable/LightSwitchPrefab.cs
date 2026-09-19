@@ -43,9 +43,7 @@ namespace AD3D_LightSolution.Items.Buildable
                 },
             };
 
-            customPrefab.SetRecipe(recipe)
-                .WithFabricatorType(CraftTree.Type.Constructor)
-                .WithStepsToFabricatorTab("Miscellaneous");
+            customPrefab.SetRecipe(recipe);
 
             customPrefab.SetEquipment(EquipmentType.Hand);
             customPrefab.SetPdaGroupCategory(TechGroup.Miscellaneous, TechCategory.Misc);

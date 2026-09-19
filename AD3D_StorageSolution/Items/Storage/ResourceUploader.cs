@@ -39,9 +39,7 @@ namespace AD3D_StorageSolution.Items.Storage
                 },
             };
 
-            customPrefab.SetRecipe(recipe)
-                .WithFabricatorType(CraftTree.Type.Constructor)
-                .WithStepsToFabricatorTab("Interior Modules");
+            customPrefab.SetRecipe(recipe);
 
             customPrefab.SetEquipment(EquipmentType.Hand);
             customPrefab.SetPdaGroupCategory(TechGroup.InteriorModules, TechCategory.InteriorModule);
