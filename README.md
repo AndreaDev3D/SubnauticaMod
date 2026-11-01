@@ -11,7 +11,7 @@ Every mod is available for both games and is published on [OpenMods](https://ope
 | **Light Solution** | Buildable indoor and outdoor lights, with a central switch to recolour and dim every fixture in range. | [OpenMods](https://openmods.net/mod/ad3d-light-solution-subnautica) | [OpenMods](https://openmods.net/mod/ad3d-lightsolution-mod) |
 | **Energy Solution** | Solar panels, a wind turbine and a depth-scaling Deep Engine to power bases the sun never reaches. | [OpenMods](https://openmods.net/mod/ad3d-energysolution-mod) | [OpenMods](https://openmods.net/mod/ad3d-energysolution-mod-below-zero) |
 | **Storage Solution** | Quantum crates, cabinets and wall storage, plus a storage monitor and a resource uploader. | [OpenMods](https://openmods.net/mod/ad3d-storagesolution-mod) | [OpenMods](https://openmods.net/mod/ad3d-storagesolution-mod-below-zero) |
-| **Industry Solution** | A walking Mech Excavator that drills resources from the sea floor into its own storage. | Coming soon | Coming soon |
+| **Industry Solution** | A walking Mech Excavator that drills resources from the sea floor into its own storage. | [OpenMods](https://openmods.net/mod/ad3d-industry-solution-subnautica) | [OpenMods](https://openmods.net/mod/ad3d-industry-solution-below-zero) |
 
 ## Requirements
 
