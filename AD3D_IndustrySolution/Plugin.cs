@@ -1,7 +1,6 @@
 ﻿using AD3D_Common;
 using AD3D_IndustrySolution.Data;
 using AD3D_IndustrySolution.Items.Buildable;
-using AD3D_IndustrySolution.Items.Equipment;
 using AD3D_IndustrySolution.Runtime;
 using BepInEx;
 using BepInEx.Logging;
@@ -44,8 +43,6 @@ namespace AD3D_IndustrySolution
 
         private void InitializePrefabs()
         {
-            YeetKnifePrefab.Register();
-
             var excavatorPrefab = new ExcavatorPrefab(
                 $"MechExcavator{Constant.Suffix}",
                 "Mech Excavator",
