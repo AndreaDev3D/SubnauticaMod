@@ -49,7 +49,7 @@ jobs:
         env:
           VER: ${{ steps.ver.outputs.version }}
         run: |
-          $mods = 'AD3D_LightSolution', 'AD3D_EnergySolution', 'AD3D_StorageSolution'
+          $mods = 'AD3D_LightSolution', 'AD3D_EnergySolution', 'AD3D_StorageSolution', 'AD3D_IndustrySolution'
           # Forward slashes + trailing slash: a trailing '\' before the closing quote would
           # escape it (MSBuild CLI quoting bug); '/' is accepted on Windows and is safe.
           $sln  = ($PWD.Path -replace '\\', '/') + '/'

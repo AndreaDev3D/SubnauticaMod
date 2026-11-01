@@ -1,0 +1,22 @@
+{
+  "$schema": "https://openmods.net/manifest.schema.json",
+  "schemaVersion": 2,
+  "slug": "ad3d-industry-solution-bz",
+  "name": "AD3D Industry Solution (Below Zero)",
+  "description": "A walking Mech Excavator that drills resources from the sea floor into its own storage, as long as it has power and lubricant.",
+  "supportedGameId": 2,
+  "releaseAssets": ["AD3D_IndustrySolution.BZ.zip"],
+  "primaryAsset": "AD3D_IndustrySolution.BZ.zip",
+  "readme": "README.md",
+  "thumbnail": "MechExcavator.png",
+  "media": [
+    { "type": "image", "url": "MechExcavator.png" }
+  ],
+  "install": {
+    "path": "BepInEx/plugins"
+  },
+  "add-on-of": 26,
+  "dependencies": {
+    "v2.0.7": [ { "modId": 30 } ]
+  }
+}
