@@ -51,8 +51,8 @@ namespace AD3D_LightSolution.Items.Buildable
             PrefabUtils.AddBasicComponents(prefab, PrefabInfo.ClassID, PrefabInfo.TechType, LargeWorldEntity.CellLevel.Medium);
             MaterialUtils.ApplySNShaders(prefab);
 
+            // A stand is only a mount for switches and lights: it has no Light or switch UI of its own
             SetupConstructable(prefab);
-            prefab.AddComponent<LightSwitch>();
 
             return prefab;
         }
