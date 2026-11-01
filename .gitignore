@@ -68,6 +68,7 @@ crashlytics-build.properties
 # AI crap
 .claude/*
 CLAUDE.md
+docs/
 
 # Build output (deployed mod zips/DLLs)
 Downloads/
