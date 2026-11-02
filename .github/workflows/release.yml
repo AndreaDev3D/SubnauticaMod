@@ -54,7 +54,7 @@ jobs:
           }
           $list = @($pick) -join ','
           "list=$list" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
-          if ($list) { Write-Host "Releasing: $list (changes since $last)" } else { Write-Host "No mod changed since $last: no release" }
+          if ($list) { Write-Host "Releasing: $list (changes since ${last})" } else { Write-Host "No mod changed since ${last}: no release" }
 
       - name: Compute next version
         id: ver
