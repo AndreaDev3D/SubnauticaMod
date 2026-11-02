@@ -10,6 +10,10 @@
   "readme": "README.md",
   "thumbnail": "MechExcavator.png",
   "media": [
+    { "type": "image", "url": "Excavator_Drilling.jpg", "label": "Drilling the sea floor" },
+    { "type": "image", "url": "Excavator_Overview.jpg", "label": "Planted on uneven ground, powered by a transmitter" },
+    { "type": "image", "url": "Excavator_DrillHead.jpg", "label": "Drill head and boom" },
+    { "type": "image", "url": "Excavator_MaintenancePanel.jpg", "label": "Maintenance access panel" },
     { "type": "image", "url": "MechExcavator.png" }
   ],
   "install": {

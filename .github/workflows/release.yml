@@ -44,7 +44,8 @@ jobs:
           if (-not $last) {
             $pick = $all
           } else {
-            $changed = @(git diff --name-only $last HEAD)
+            # Store-page edits (.openmods/) sync to OpenMods on push without a new release
+            $changed = @(git diff --name-only $last HEAD | Where-Object { $_ -notmatch '/\.openmods/' })
             $shared = $changed | Where-Object { $_ -match '^(AD3D_Common/|Libs/|Dependencies/|[^/]+\.(targets|props|sln)$)' }
             if ($shared) {
               $pick = $all
