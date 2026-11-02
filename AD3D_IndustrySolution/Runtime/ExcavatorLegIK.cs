@@ -83,18 +83,25 @@ namespace AD3D_IndustrySolution.Runtime
             var groundNormal = up;
             var planted = false;
 
+            // In the modelled pose the sole sits on the machine's floor plane (model floor = root pivot), this far
+            // below the ankle pin. It moves with the ankle as the leg swings.
+            var soleBelowAnkle = Vector3.Dot(leg.Ankle.position - transform.position, up);
+
             for (var i = 0; i < 3; i++)
             {
                 var hip = leg.Hip.position;
                 var ankle = leg.Ankle.position;
 
-                // Sole centre: straight below the ankle, on the machine's floor plane (model floor = root pivot)
-                var sole = ankle - up * Vector3.Dot(ankle - transform.position, up);
+                // Where the sole is now, and where it should be: on the ground, clamped to the leg's range around
+                // the floor plane. Swing by the difference only: the passes re-sample the ground as the ankle moves
+                // sideways, they must not add the same offset again.
+                var sole = ankle - up * soleBelowAnkle;
                 if (!FindGround(sole, up, out var ground, out groundNormal))
                     break;
                 planted = true;
 
-                var dh = Mathf.Clamp(Vector3.Dot(ground - sole, up), -MaxDrop, MaxRise);
+                var targetHeight = Mathf.Clamp(Vector3.Dot(ground - transform.position, up), -MaxDrop, MaxRise);
+                var dh = targetHeight - Vector3.Dot(sole - transform.position, up);
                 if (Mathf.Abs(dh) < 0.005f)
                     break;
 

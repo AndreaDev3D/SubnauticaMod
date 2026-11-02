@@ -131,7 +131,7 @@ namespace AD3D_IndustrySolution.Items.Buildable
 
             var container = storagePoint.AddComponent<StorageContainer>();
             container.prefabRoot = prefab;
-            container.storageRoot = CreateStorageRoot(storagePoint, $"{PrefabInfo.ClassID}Storage");
+            container.storageRoot = CreateStorageRoot(prefab, "StorageRoot", $"{PrefabInfo.ClassID}Storage");
             container.width = StorageSize.x;
             container.height = StorageSize.y;
             container.preventDeconstructionIfNotEmpty = true;
@@ -150,17 +150,20 @@ namespace AD3D_IndustrySolution.Items.Buildable
             // 2x2 = 4 Lubricant items, 25% each
             var lubricant = lubricantPoint.AddComponent<LubricantController>();
             lubricant.prefabRoot = prefab;
-            lubricant.storageRoot = CreateStorageRoot(lubricantPoint, $"{PrefabInfo.ClassID}Lubricant");
+            lubricant.storageRoot = CreateStorageRoot(prefab, "LubricantRoot", $"{PrefabInfo.ClassID}Lubricant");
             lubricant.width = 2;
             lubricant.height = 2;
             lubricant.hoverText = "Add Lubricant";
             lubricant.storageLabel = "LUBRICANT";
         }
 
-        private static ChildObjectIdentifier CreateStorageRoot(GameObject parent, string classId)
+        // The root must be a DIRECT child of the prefab root (the PrefabIdentifier): the save stores a
+        // ChildObjectIdentifier's parent as its direct parent's UniqueIdentifier only. Under a model child
+        // that parent is null, and on load the items land in a temporary "MISSING PARENT OBJECT" and are lost.
+        private static ChildObjectIdentifier CreateStorageRoot(GameObject prefab, string name, string classId)
         {
-            var root = new GameObject($"{parent.name}Root");
-            root.transform.SetParent(parent.transform, false);
+            var root = new GameObject(name);
+            root.transform.SetParent(prefab.transform, false);
 
             var identifier = root.AddComponent<ChildObjectIdentifier>();
             identifier.ClassId = classId;
