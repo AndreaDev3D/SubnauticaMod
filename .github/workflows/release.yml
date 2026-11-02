@@ -1,7 +1,8 @@
 name: Build & Release
 
-# Every push to main builds all distributed mods for both SN and BZ, then publishes a
-# single GitHub release tagged vX.Y.Z carrying all the zips. The version is a repo-wide
+# Every push to main builds the distributed mods that changed since the last release (all of
+# them when shared code changed) for both SN and BZ, then publishes a single GitHub release
+# tagged vX.Y.Z carrying their zips. A push that changes no mod makes no release. The version is a repo-wide
 # 3-digit odometer (each digit 0-9): 2.0.9 -> 2.1.0, 2.9.9 -> 3.0.0. It lives in /VERSION,
 # is bumped by this workflow, and committed back with [skip ci] (the GITHUB_TOKEN push does
 # not retrigger CI either, so no loop).
@@ -31,8 +32,33 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
+      # Only mods whose folder changed since the last release tag are rebuilt and attached. OpenMods
+      # picks each mod's zip by name (releaseAssets) and skips a release that doesn't carry it, so the
+      # other mods keep their current version. Shared code or build files changed: release everything.
+      - name: Pick mods to release
+        id: mods
+        shell: pwsh
+        run: |
+          $all = 'AD3D_LightSolution', 'AD3D_EnergySolution', 'AD3D_StorageSolution', 'AD3D_IndustrySolution'
+          $last = git describe --tags --abbrev=0 --match 'v*' 2>$null
+          if (-not $last) {
+            $pick = $all
+          } else {
+            $changed = @(git diff --name-only $last HEAD)
+            $shared = $changed | Where-Object { $_ -match '^(AD3D_Common/|Libs/|Dependencies/|[^/]+\.(targets|props|sln)$)' }
+            if ($shared) {
+              $pick = $all
+            } else {
+              $pick = $all | Where-Object { $m = $_; $changed | Where-Object { $_.StartsWith("$m/") } }
+            }
+          }
+          $list = @($pick) -join ','
+          "list=$list" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          if ($list) { Write-Host "Releasing: $list (changes since $last)" } else { Write-Host "No mod changed since $last: no release" }
+
       - name: Compute next version
         id: ver
+        if: steps.mods.outputs.list != ''
         shell: pwsh
         run: |
           $raw = (Get-Content VERSION -Raw).Trim()
@@ -45,11 +71,13 @@ jobs:
           Write-Host "Releasing $v"
 
       - name: Build & stage (SN + BZ)
+        if: steps.mods.outputs.list != ''
         shell: pwsh
         env:
           VER: ${{ steps.ver.outputs.version }}
+          MODS: ${{ steps.mods.outputs.list }}
         run: |
-          $mods = 'AD3D_LightSolution', 'AD3D_EnergySolution', 'AD3D_StorageSolution', 'AD3D_IndustrySolution'
+          $mods = $env:MODS.Split(',')
           # Forward slashes + trailing slash: a trailing '\' before the closing quote would
           # escape it (MSBuild CLI quoting bug); '/' is accepted on Windows and is safe.
           $sln  = ($PWD.Path -replace '\\', '/') + '/'
@@ -63,6 +91,7 @@ jobs:
           }
 
       - name: Zip artifacts
+        if: steps.mods.outputs.list != ''
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path dist | Out-Null
@@ -88,6 +117,7 @@ jobs:
           Get-ChildItem dist
 
       - name: Create GitHub release
+        if: steps.mods.outputs.list != ''
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
@@ -97,6 +127,7 @@ jobs:
           gh release create $env:TAG @zips --title "Release $env:TAG" --generate-notes
 
       - name: Commit version bump
+        if: steps.mods.outputs.list != ''
         shell: pwsh
         env:
           VER: ${{ steps.ver.outputs.version }}
