@@ -39,7 +39,7 @@ jobs:
         id: mods
         shell: pwsh
         run: |
-          $all = 'AD3D_LightSolution', 'AD3D_EnergySolution', 'AD3D_StorageSolution', 'AD3D_IndustrySolution'
+          $all = 'AD3D_LightSolution', 'AD3D_EnergySolution', 'AD3D_StorageSolution', 'AD3D_IndustrySolution', 'AD3D_TransportSolution'
           $last = git describe --tags --abbrev=0 --match 'v*' 2>$null
           if (-not $last) {
             $pick = $all
