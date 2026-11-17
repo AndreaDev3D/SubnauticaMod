@@ -1,0 +1,27 @@
+{
+  "$schema": "https://openmods.net/manifest.schema.json",
+  "schemaVersion": 2,
+  "slug": "ad3d-transport-solution-sn",
+  "name": "AD3D Transport Solution (Subnautica)",
+  "description": "A suspended monorail for your base: place pylons and the rail builds itself between them, on land or under water. Ride the pod, haul cargo wagons and carry your Prawn Suit.",
+  "supportedGameId": 1,
+  "releaseAssets": ["AD3D_TransportSolution.SN.zip"],
+  "primaryAsset": "AD3D_TransportSolution.SN.zip",
+  "readme": "README.md",
+  "thumbnail": "Monorail_Pod.png",
+  "media": [
+    { "type": "image", "url": "Monorail_Underwater.jpg", "label": "A train under water: Prawn carrier, cargo wagon and pod" },
+    { "type": "image", "url": "Monorail_Train.jpg", "label": "The same train between two pylons on the surface" },
+    { "type": "image", "url": "Monorail_Pylon.png", "label": "Monorail Pylon" },
+    { "type": "image", "url": "Monorail_Pod.png", "label": "Monorail Pod" },
+    { "type": "image", "url": "Monorail_Wagon.png", "label": "Monorail Cargo Wagon" },
+    { "type": "image", "url": "Monorail_PrawnCarrier.png", "label": "Monorail Prawn Carrier" }
+  ],
+  "install": {
+    "path": "BepInEx/plugins"
+  },
+  "add-on-of": 26,
+  "dependencies": {
+    "v2.0.9": [ { "modId": 30 } ]
+  }
+}
