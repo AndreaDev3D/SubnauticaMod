@@ -47,52 +47,68 @@ namespace AD3D_EnergySolution
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
         }
 
+        private const float SolarRatePerPanel = 0.125f;   // W/sec in full sun, at the surface
+        private const int SolarBufferPerPanel = 250;
+
+        private void RegisterSolar(string classID, string friendlyName, int panels, string description, RecipeData recipe)
+        {
+            // only once the bundle has its prefab (an older bundle would give a buildable that can't be made)
+            if (AssetsBundle.LoadAsset<GameObject>($"{classID}.prefab") == null)
+            {
+                Logger.LogInfo($"{classID} is not in the bundle yet: {friendlyName} is not available");
+                return;
+            }
+            var prefab = new GenericPowerPrefab(classID, friendlyName,
+                $"{description} Works best between -10 m and the surface (peaks at the surface).", recipe);
+            prefab.Register();
+            prefab.OnRegisterCompleted = go =>
+            {
+                var pow = go.AddComponent<GenericPowerController>();
+                pow.MaxPowerAllowed = SolarBufferPerPanel * panels;
+                pow.CurrentEmitIntervalSec = 2f;
+                pow.CurrentEmitRate = SolarRatePerPanel * panels * pow.CurrentEmitIntervalSec;
+                pow.MinDepth = -10f;
+                pow.MaxDepth = 0f; // full output at sea level and above
+                pow.IsSunSusceptible = true;
+            };
+        }
+
         private void InitializePrefabs()
         {
-            var solarPanelPrefab = new GenericPowerPrefab(
-                classID:"PowerSolarPanel",
-                friendlyName: "Power Solar Panel",
-                shortDescription: "A high efficiency Solar Panel that produce 0.125 W/sec. Works best between -10 and 10 (peaks near the surface).",
-                recipeData: new RecipeData(
+            // Solar family: output and buffer scale with the number of panels (0.125 /s and 250 per panel). The two
+            // single panels keep their class IDs, so panels in existing saves stay.
+            RegisterSolar("PowerSolarPanel", "Power Solar Panel", 1,
+                "A tilted solar panel that produces 0.125 W/sec in full sun.",
+                new RecipeData(
                     new Ingredient(TechType.Titanium, 2),
-                    new Ingredient(TechType.WiringKit, 1))
-                );
-            solarPanelPrefab.Register();
-            solarPanelPrefab.OnRegisterCompleted = (prefab) =>
-            {
-                var pow = prefab.AddComponent<GenericPowerController>();
-                pow.MaxPowerAllowed = 250;
-                pow.CurrentEmitRate = 0.25f;
-                pow.CurrentEmitIntervalSec = 2f;
-                pow.MinDepth = -10f;
-                pow.MaxDepth = 10f;
-                pow.IsSunSusceptible = true;
-            };
+                    new Ingredient(TechType.WiringKit, 1)));
 
-            var solarPanelFloorPrefab = new GenericPowerPrefab(
-                classID: "PowerSolarPanel_floor",
-                friendlyName: "Power Solar Panel Flat",
-                shortDescription: "A high efficiency Solar Panel that produce 0.125 W/sec. Works best between -10 and 10 (peaks near the surface).",
-                recipeData: new RecipeData(
+            RegisterSolar("PowerSolarPanel_floor", "Power Solar Panel Flat", 1,
+                "A low, flat solar panel that produces 0.125 W/sec in full sun.",
+                new RecipeData(
                     new Ingredient(TechType.Titanium, 2),
-                    new Ingredient(TechType.WiringKit, 1))
-                );
-            solarPanelFloorPrefab.Register();
-            solarPanelFloorPrefab.OnRegisterCompleted = (prefab) =>
-            {
-                var pow = prefab.AddComponent<GenericPowerController>();
-                pow.MaxPowerAllowed = 250;
-                pow.CurrentEmitRate = 0.25f;
-                pow.CurrentEmitIntervalSec = 2f;
-                pow.MinDepth = -10f;
-                pow.MaxDepth = 10f;
-                pow.IsSunSusceptible = true;
-            };
+                    new Ingredient(TechType.WiringKit, 1)));
+
+            RegisterSolar("SolarArray_Medium", "Power Solar Array Medium", 4,
+                "Four solar panels on one mast, with a battery. Produces 0.5 W/sec in full sun.",
+                new RecipeData(
+                    new Ingredient(TechType.Titanium, 4),
+                    new Ingredient(TechType.Glass, 2),
+                    new Ingredient(TechType.WiringKit, 1),
+                    new Ingredient(TechType.Battery, 1)));
+
+            RegisterSolar("SolarArray_Large", "Power Solar Array Large", 9,
+                "Nine solar panels on two masts, with a battery bank. Produces 1.125 W/sec in full sun.",
+                new RecipeData(
+                    new Ingredient(TechType.TitaniumIngot, 1),
+                    new Ingredient(TechType.Glass, 4),
+                    new Ingredient(TechType.AdvancedWiringKit, 1),
+                    new Ingredient(TechType.PowerCell, 1)));
 
             var powerWindTurbinePrefab = new GenericPowerPrefab(
                 classID: "PowerWindTurbine",
                 friendlyName: "Power Wind Turbine",
-                shortDescription: "High efficiency Wind Turbine that produce 0.25 W/sec. Works best between -5 and 10 (higher = stronger).",
+                shortDescription: "High efficiency Wind Turbine that produce 0.25 W/sec. Works best between -5 m and the surface (peaks at the surface).",
                 recipeData: new RecipeData(
                     new Ingredient(TechType.Titanium, 3),
                     new Ingredient(TechType.WiringKit, 1))
@@ -105,7 +121,7 @@ namespace AD3D_EnergySolution
                 pow.CurrentEmitRate = 0.5f;
                 pow.CurrentEmitIntervalSec = 2f;
                 pow.MinDepth = -5f;
-                pow.MaxDepth = 10f;
+                pow.MaxDepth = 0f; // full output at sea level and above
                 pow.IsSunSusceptible = true;
             };
 
@@ -128,6 +144,31 @@ namespace AD3D_EnergySolution
                 pow.CurrentEmitIntervalSec = 2f;
                 pow.MinDepth = -5f;
                 pow.MaxDepth = -200f;
+                pow.IsSunSusceptible = false;
+            };
+
+            var biomassBurnerPrefab = new GenericPowerPrefab(
+                classID: "BiomassBurner",
+                friendlyName: "Biomass Burner",
+                shortDescription: "Burns fish and plants to produce 0.5 W/sec. Surface only: it needs air. Each item gives half the energy it would give a Bioreactor.",
+                recipeData: new RecipeData(
+                    new Ingredient(TechType.Titanium, 4),
+                    new Ingredient(TechType.WiringKit, 1),
+                    new Ingredient(TechType.Quartz, 2))
+                )
+            {
+                FuelStorageSize = new Vector2Int(3, 3),
+                SurfaceOnly = true,
+                BakeRootRotation = true,
+            };
+            biomassBurnerPrefab.Register();
+            biomassBurnerPrefab.OnRegisterCompleted = (prefab) =>
+            {
+                var pow = prefab.AddComponent<BiomassBurnerController>();
+                pow.MaxPowerAllowed = 500;
+                pow.CurrentEmitRate = 1.0f;
+                pow.CurrentEmitIntervalSec = 2f;
+                pow.FuelEfficiency = 0.5f;
                 pow.IsSunSusceptible = false;
             };
         }

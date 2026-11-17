@@ -28,6 +28,13 @@ namespace AD3D_EnergySolution.Runtime
         private float biomeSunlightScale = 1f;
 
         public LubricantStorageController lubricantStorageController;
+        private LubricantWarning _lubricantWarning;
+        private bool? _hadLubricant;
+
+        // With a lubricant container the generator only produces while it has lubricant
+        public bool HasLubricant => lubricantStorageController == null || lubricantStorageController.LubricantAmount > 0f;
+
+        protected string Id => gameObject.GetComponent<PrefabIdentifier>()?.Id;
 
         // Linear interp on world-space Y between MinDepth (0%) and MaxDepth (100%).
         // Works for both directions: Wind/Solar use MaxDepth > MinDepth (high = strong);
@@ -42,7 +49,7 @@ namespace AD3D_EnergySolution.Runtime
 
         private float GetSunScalar() => DayNightCycle.main.GetLocalLightScalar() * this.biomeSunlightScale;
 
-        protected float GetRechargeScalar()
+        protected virtual float GetRechargeScalar()
         {
             var depth = GetDepthScalar();
             return IsSunSusceptible ? depth * GetSunScalar() : depth;
@@ -56,36 +63,48 @@ namespace AD3D_EnergySolution.Runtime
             powerSource.maxPower = MaxPowerAllowed;
 
             lubricantStorageController = gameObject.GetAllComponentsInChildren<LubricantStorageController>().FirstOrDefault();
+            if (lubricantStorageController != null)
+                _lubricantWarning = gameObject.AddComponent<LubricantWarning>();
+
+            // On unless the player switched it off
+            var id = Id;
+            IsEnabled = string.IsNullOrEmpty(id) || Plugin.ModData.SwitchedOff == null || !Plugin.ModData.SwitchedOff.Contains(id);
+            OnEnabledChanged();
 
             InvokeRepeating("EmitEnergy", 0, CurrentEmitIntervalSec);
         }
 
         public virtual void EmitEnergy()
         {
-            if (!IsEnabled)
-                return;
-
             try
             {
-                if (Constructable.constructed)
+                UpdateLubricantWarning();
+
+                // An empty generator stops producing but stays switched on, so it restarts as soon as it is refilled
+                if (IsEnabled && Constructable.constructed && HasLubricant)
                 {
                     var rate = CurrentEmitRate * GetRechargeScalar();
                     powerRelay.ModifyPower(rate, out float num);
 
-                    if (lubricantStorageController != null)
-                    {
-                        var result = lubricantStorageController.SetLubricantAmount(-0.0001f);
-                        if (result == 0f)
-                        {
-                            StartNStop();
-                        }
-                    }
+                    lubricantStorageController?.SetLubricantAmount(-0.0001f);
                 }
             }
             catch (Exception ex)
             {
                 Plugin.Logger.LogError($"Error Emitting {gameObject.name} {ex.Message}");
             }
+        }
+
+        // The light blinks while it is empty; the on-screen warning only when a generator runs dry, not at load
+        protected void UpdateLubricantWarning()
+        {
+            var hasLubricant = HasLubricant;
+            if (_lubricantWarning != null)
+                _lubricantWarning.Active = !hasLubricant && Constructable.constructed;
+
+            if (_hadLubricant == true && !hasLubricant && IsEnabled)
+                ErrorMessage.AddWarning($"{Language.main.Get(CraftData.GetTechType(gameObject).AsString())} is out of lubricant");
+            _hadLubricant = hasLubricant;
         }
 
         public virtual void OnHandHover(GUIHand hand)
@@ -99,7 +118,8 @@ namespace AD3D_EnergySolution.Runtime
                 var recharge = this.GetRechargeScalar();
                 var power = Mathf.RoundToInt(this.powerSource.GetPower());
                 var maxPower = Mathf.RoundToInt(this.powerSource.GetMaxPower());
-                text = $"Efficiency: {recharge:P0} \n Charge: {power}/{maxPower} kW";
+                text = HasLubricant ? $"Efficiency: {recharge:P0}" : "OUT OF LUBRICANT";
+                text += $"\n Charge: {power}/{maxPower} kW";
 
                 if (lubricantStorageController != null)
                     text += $"\nLubricant: {lubricantStorageController.LubricantAmount:P}";
@@ -122,6 +142,21 @@ namespace AD3D_EnergySolution.Runtime
         public virtual void StartNStop()
         {
             IsEnabled = !IsEnabled;
+
+            var id = Id;
+            if (!string.IsNullOrEmpty(id))
+            {
+                Plugin.ModData.SwitchedOff ??= new HashSet<string>();
+                if (IsEnabled)
+                    Plugin.ModData.SwitchedOff.Remove(id);
+                else
+                    Plugin.ModData.SwitchedOff.Add(id);
+            }
+
+            OnEnabledChanged();
         }
+
+        // Syncs visuals (animations, screens) with IsEnabled
+        protected virtual void OnEnabledChanged() { }
     }
 }

@@ -21,7 +21,7 @@ namespace AD3D_EnergySolution.Runtime
 
         void Update()
         {
-            if (!IsEnabled)
+            if (!IsEnabled || !HasLubricant)
                 return;
 
             BladeHead.Rotate(0, rotationSpeed * Time.deltaTime, 0);

@@ -39,8 +39,6 @@ namespace AD3D_EnergySolution.BO.Runtime
             lblDepth.text = $"{Mathf.RoundToInt(Mathf.Abs(this.gameObject.transform.position.y)).ToString()} m";
 
             base.Start();
-
-            StartNStop();
         }
         
         public override void EmitEnergy()
@@ -54,7 +52,8 @@ namespace AD3D_EnergySolution.BO.Runtime
                     var power = Mathf.RoundToInt(powerSource.GetPower());
                     var powerMax = Mathf.RoundToInt(powerSource.GetMaxPower());
                     lblBattery.text = $"Power {power}/{powerMax} Kw";
-                    
+
+                    gameObject.GetComponent<DeepEngineAnimations>().IsEnabled = IsEnabled && HasLubricant;
                     UpdateUI();
                 }
             }
@@ -70,8 +69,8 @@ namespace AD3D_EnergySolution.BO.Runtime
             {
                 var power = Mathf.RoundToInt(powerSource.GetPower());
                 var powerMax = Mathf.RoundToInt(powerSource.GetMaxPower());
-                var scalar = GetRechargeScalar();
-                lblStatus.text = $"<color=green>POWERED</color>";
+                var scalar = HasLubricant ? GetRechargeScalar() : 0f;
+                lblStatus.text = HasLubricant ? "<color=green>POWERED</color>" : "<color=orange>NO LUBRICANT</color>";
                 lblBattery.text = $"Power {power}/{powerMax} Kw";
                 lblEmission.text = $"{Math.Round(CurrentEmitRate * scalar, 2)} w/sec ({scalar:P0})";
             }
@@ -82,7 +81,8 @@ namespace AD3D_EnergySolution.BO.Runtime
                 lblEmission.text = $"0.0 w/sec";
             }
 
-            lblLubricant.text = $"{lubricantStorageController.LubricantAmount:P}";
+            if (lubricantStorageController != null)
+                lblLubricant.text = HasLubricant ? $"{lubricantStorageController.LubricantAmount:P}" : "<color=orange>EMPTY</color>";
         }
 
         void SetupAudio()
@@ -129,11 +129,9 @@ namespace AD3D_EnergySolution.BO.Runtime
         //    StartNStop();
         //}
 
-        public override void StartNStop()
+        protected override void OnEnabledChanged()
         {
-            base.StartNStop();
-
-            gameObject.GetComponent<DeepEngineAnimations>().IsEnabled = IsEnabled;
+            gameObject.GetComponent<DeepEngineAnimations>().IsEnabled = IsEnabled && HasLubricant;
             UpdateUI();
         }
     }

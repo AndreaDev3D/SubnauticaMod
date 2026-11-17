@@ -6,6 +6,8 @@ The Below Zero edition of AD3D EnergySolution. Brings the same buildable energy 
 
 - **Deep Engine** — a generator whose output scales with depth, for deep BZ bases.
 - **Wind Turbine** — surface/shallow power that complements solar.
+- **Biomass Burner** — burns fish and plants for power. Surface only: it needs air.
+- **Solar panels and arrays** — a tilted and a flat Power Solar Panel, plus a Medium array (four panels) and a Large array (nine panels) with their own batteries.
 - Buildable straight from the Habitat Builder menu, no console commands.
 
 ## Installation

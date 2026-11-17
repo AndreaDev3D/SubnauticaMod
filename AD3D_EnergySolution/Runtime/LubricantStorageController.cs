@@ -32,7 +32,13 @@ namespace AD3D_EnergySolution.Runtime
             this.container.isAllowedToRemove += new global::IsAllowedToRemove(this.IsAllowedToRemove);
             this.container.onAddItem += AddLubricant;
 
+            // A child of the container, or (when the container is a separate collider object) anywhere in the machine
             LubricantAmountObj = transform.Find("LubricantAmount");
+            if (LubricantAmountObj == null)
+            {
+                var root = GetComponentInParent<PrefabIdentifier>()?.transform ?? transform.root;
+                LubricantAmountObj = root.GetComponentsInChildren<Transform>(true).FirstOrDefault(t => t.name == "LubricantAmount");
+            }
 
             if (!string.IsNullOrEmpty(Id) && Plugin.ModData.LubricantLevels != null && Plugin.ModData.LubricantLevels.TryGetValue(Id, out float savedAmount))
             {

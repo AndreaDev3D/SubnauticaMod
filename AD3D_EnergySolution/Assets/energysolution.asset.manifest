@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1931855947
+CRC: 968819330
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 92a9424071bdbe9dbb7e11fa01a9408a
+    Hash: 88d0d53708dabf7697b31cf87d358e1a
   TypeTreeHash:
     serializedVersion: 2
     Hash: 4fabd6fc1aa8d5e0dcb035f0416409d2
@@ -59,8 +59,11 @@ Assets:
 - Assets/Resources/Icons/Battery.png
 - Assets/EnergySolution/Icons/PowerSolarPanel.png
 - Assets/EnergySolution/Prefabs/PowerSolarPanel.prefab
+- Assets/EnergySolution/Prefabs/SolarArray_Medium.prefab
+- Assets/EnergySolution/Prefabs/SolarArray_Large.prefab
 - Assets/EnergySolution/Icons/DeepEngine.png
 - Assets/EnergySolution/Prefabs/DeepEngine.prefab
+- Assets/EnergySolution/Icons/SolarArray_Large.png
 - Assets/EnergySolution/Icons/PowerSolarPanel_floor.png
 - Assets/Resources/Icons/Wifi.png
 - Assets/EnergySolution/Sounds/Engine_FX.mp3
@@ -68,8 +71,11 @@ Assets:
 - Assets/EnergySolution/Icons/PowerWindTurbine 1.png
 - Assets/EnergySolution/Textures/DeepEngine_DeepEngine_BaseMap.png
 - Assets/EnergySolution/Textures/DeepEngine_DeepEngine_Emissive.png
+- Assets/EnergySolution/Icons/BiomassBurner.png
 - Assets/Resources/Icons/Power.png
+- Assets/EnergySolution/Prefabs/BiomassBurner.prefab
 - Assets/EnergySolution/Icons/PowerWindTurbine.png
+- Assets/EnergySolution/Icons/SolarArray_Medium.png
 - Assets/EnergySolution/Textures/DeepEngine_DeepEngine_Normal.png
 - Assets/EnergySolution/Prefabs/PowerSolarPanel_floor.prefab
 - Assets/EnergySolution/Models/DeepEngine.mat
