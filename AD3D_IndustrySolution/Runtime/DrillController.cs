@@ -20,11 +20,14 @@ namespace AD3D_IndustrySolution.Runtime
         }
     }
 
-    public class ExcavatorController : MonoBehaviour, IHandTarget
+    // Drills a resource into the machine's storage every cycle while it has power and lubricant. Shared by every
+    // drilling machine; drives DrillAnimator if the prefab has one.
+    public class DrillController : MonoBehaviour, IHandTarget
     {
         public enum State { Off, Building, NoStorage, NoLubricant, NoPower, StorageFull, Drilling }
 
         // Tuning: set per prefab in Plugin.cs
+        public string DisplayName = "Drill"; // hover text and log lines
         public float CycleSeconds = 60f;
         public float PowerPerSecond = 0.25f; // at full power; with less, the cycle advances proportionally slower
         public float MinPower = 0.01f;       // below this the machine stops
@@ -33,6 +36,9 @@ namespace AD3D_IndustrySolution.Runtime
 
         // The drill starts each cycle partly down and reaches full depth when the cycle completes
         public float StartExtension = 0.2f;
+
+        // The out-of-lubricant light sits this far above the Lubricant point, unless the prefab has a 'LubricantLight'
+        public float LubricantLightHeight = 0.3f;
 
         public bool IsEnabled = true;
         public State CurrentState { get; private set; } = State.Building;
@@ -45,7 +51,8 @@ namespace AD3D_IndustrySolution.Runtime
         private PowerRelay _powerRelay;
         private StorageContainer _storage;
         private LubricantController _lubricant;
-        private ExcavatorAnimator _animator;
+        private DrillAnimator _animator;
+        private LubricantWarning _lubricantWarning;
 
         // Whichever connected relay has the most power: this relay (sources linked into it), the end of the chain it
         // links on to (a base or transmitter chain), or a base it's parented to
@@ -78,7 +85,7 @@ namespace AD3D_IndustrySolution.Runtime
 
             if (_powerRelay == null)
             {
-                Plugin.Logger.LogWarning("Excavator power: no PowerRelay on the machine");
+                Plugin.Logger.LogWarning($"{DisplayName} power: no PowerRelay on the machine");
                 return;
             }
 
@@ -87,7 +94,7 @@ namespace AD3D_IndustrySolution.Runtime
                 ? "none"
                 : string.Join(", ", inbound.Select(s => $"{(s as Component)?.name ?? s.GetType().Name} ({s.GetPower():0.#})"));
 
-            Plugin.Logger.LogWarning($"Excavator power: relay {Describe(_powerRelay)} | outbound {Describe(_powerRelay.outboundRelay)} | " +
+            Plugin.Logger.LogWarning($"{DisplayName} power: relay {Describe(_powerRelay)} | outbound {Describe(_powerRelay.outboundRelay)} | " +
                 $"endpoint {Describe(_powerRelay.GetEndpoint())} | base {Describe(PowerSource.FindRelay(transform))} | inbound {inboundText}");
         }
 
@@ -97,14 +104,22 @@ namespace AD3D_IndustrySolution.Runtime
             _powerRelay = GetComponent<PowerRelay>();
             _storage = GetComponentsInChildren<StorageContainer>(true).FirstOrDefault(s => !(s is LubricantController));
             _lubricant = GetComponentInChildren<LubricantController>(true);
-            _animator = GetComponent<ExcavatorAnimator>();
+            _animator = GetComponent<DrillAnimator>();
+
+            if (_lubricant != null)
+            {
+                _lubricantWarning = gameObject.AddComponent<LubricantWarning>();
+                _lubricantWarning.HeightAboveAnchor = LubricantLightHeight;
+            }
 
             InvokeRepeating(nameof(Tick), 1f, 1f);
         }
 
         private void Tick()
         {
+            var previous = CurrentState;
             CurrentState = EvaluateState();
+            UpdateLubricantWarning(previous);
             if (CurrentState == State.NoPower)
                 LogPowerDiagnostics();
             if (CurrentState != State.Drilling)
@@ -140,13 +155,23 @@ namespace AD3D_IndustrySolution.Runtime
             return State.Drilling;
         }
 
+        // The light blinks while it is dry; the on-screen warning only when a working machine runs dry, not at load
+        private void UpdateLubricantWarning(State previous)
+        {
+            if (_lubricantWarning != null)
+                _lubricantWarning.Active = CurrentState != State.Building && !_lubricant.HasLubricant(LubricantPerCycle);
+
+            if (CurrentState == State.NoLubricant && previous != State.NoLubricant && previous != State.Building)
+                ErrorMessage.AddWarning($"{DisplayName} is out of lubricant");
+        }
+
         private IEnumerator DepositResource()
         {
             _isDepositing = true;
 
             var biome = GetBiome();
             var techType = RollResource(DrillTables.Get(biome));
-            Plugin.Logger.LogInfo($"Excavator drilled {techType} in biome '{biome}'");
+            Plugin.Logger.LogInfo($"{DisplayName} drilled {techType} in biome '{biome}'");
 
             if (techType != TechType.None)
             {
@@ -166,12 +191,12 @@ namespace AD3D_IndustrySolution.Runtime
         }
 
         // Weighted pick; a TechType.None entry in the table means "nothing found"
-        private static TechType RollResource(List<DrillEntry> table)
+        private TechType RollResource(List<DrillEntry> table)
         {
             var total = table.Sum(e => e.Weight);
             if (total <= 0f)
             {
-                Plugin.Logger.LogWarning("Excavator: drill table is empty, nothing to drill");
+                Plugin.Logger.LogWarning($"{DisplayName}: drill table is empty, nothing to drill");
                 return TechType.None;
             }
 
@@ -207,14 +232,14 @@ namespace AD3D_IndustrySolution.Runtime
             {
                 State.Off => "Off",
                 State.NoStorage => "Storage or Lubricant point missing in prefab",
-                State.NoLubricant => "Needs lubricant",
+                State.NoLubricant => "OUT OF LUBRICANT",
                 State.NoPower => "No power",
                 State.StorageFull => "Storage full",
                 _ => $"Drilling {Mathf.FloorToInt(_progress)}/{Mathf.RoundToInt(CycleSeconds)}s" +
                      (PowerRatio < 0.99f ? $" (low power {PowerRatio:P0})" : string.Empty),
             };
 
-            var text = $"Mech Excavator: {status}";
+            var text = $"{DisplayName}: {status}";
             if (_lubricant != null)
                 text += $"\nLubricant: {_lubricant.LubricantAmount:P0}";
             text += PowerNetwork != null ? $"\nPower: {Mathf.RoundToInt(PowerNetwork.GetPower())}" : "\nPower: no relay";

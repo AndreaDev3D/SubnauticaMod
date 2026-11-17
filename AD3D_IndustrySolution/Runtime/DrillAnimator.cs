@@ -3,16 +3,21 @@ using UnityEngine;
 
 namespace AD3D_IndustrySolution.Runtime
 {
-    // Procedural drill animation, driven by ExcavatorController: telescope extension, bit spin,
+    // Procedural drill animation, driven by DrillController: telescope extension, bit spin,
     // shake and sediment particles where the bit meets the ground.
-    public class ExcavatorAnimator : MonoBehaviour
+    // The pivots are found by name; a missing second stage is fine (single-stage drill).
+    public class DrillAnimator : MonoBehaviour
     {
-        // Set by ExcavatorController
+        // Set by DrillController
         public bool IsDrilling;
-        public float TargetExtension; // 0 = retracted, 1 = both stages fully down
+        public float TargetExtension; // 0 = retracted, 1 = every stage fully down
         public float PowerRatio = 1f; // the bit spins slower on weak power
 
         // Tuning: set in Plugin.cs
+        public string SlideName;      // first telescope stage
+        public string Slide2Name;     // optional second stage, carried by the first
+        public string SpinName;       // spins about its local Z
+        public string BitName;        // renderer whose lowest point is the bit tip
         public float SlideStroke = 0.80f;
         public float Slide2Stroke = 1.10f;
         public float ExtendSpeed = 0.15f;  // extension units per second
@@ -21,6 +26,7 @@ namespace AD3D_IndustrySolution.Runtime
         public float SpinAcceleration = 120f;
         public float ShakeAmplitude = 0.008f;
         public float GroundContactDistance = 0.3f;
+        public float FXScale = 1f;         // sediment cloud and chip size, cone radius
 
         private Transform _slide, _slide2, _spin;
         private Vector3 _slideHome, _slide2Home;
@@ -35,10 +41,10 @@ namespace AD3D_IndustrySolution.Runtime
 
         private void Start()
         {
-            _slide = gameObject.FindByName("EX_Drill_Slide")?.transform;
-            _slide2 = gameObject.FindByName("EX_Drill_Slide2")?.transform;
-            _spin = gameObject.FindByName("EX_Drill_Spin")?.transform;
-            _bit = gameObject.FindByName("EX_Bit_low")?.GetComponent<Renderer>();
+            _slide = Find(SlideName);
+            _slide2 = Find(Slide2Name);
+            _spin = Find(SpinName);
+            _bit = Find(BitName)?.GetComponent<Renderer>();
 
             if (_slide != null) _slideHome = _slide.localPosition;
             if (_slide2 != null) _slide2Home = _slide2.localPosition;
@@ -57,19 +63,19 @@ namespace AD3D_IndustrySolution.Runtime
 
             var inGround = IsDrilling && UpdateGroundContact();
 
-            // The drill axis is the model's local Z; the stages telescope down along it
+            // The drill axis is the model's local Z; the stages telescope down along it. The last stage shakes.
+            var shake = inGround ? (Vector3)(Random.insideUnitCircle * ShakeAmplitude) : Vector3.zero;
             if (_slide != null)
-                _slide.localPosition = _slideHome - Vector3.forward * (_extension * SlideStroke);
+                _slide.localPosition = _slideHome - Vector3.forward * (_extension * SlideStroke) + (_slide2 == null ? shake : Vector3.zero);
             if (_slide2 != null)
-            {
-                var shake = inGround ? (Vector3)(Random.insideUnitCircle * ShakeAmplitude) : Vector3.zero;
                 _slide2.localPosition = _slide2Home - Vector3.forward * (_extension * Slide2Stroke) + shake;
-            }
             if (_spin != null && _spinSpeed > 0f)
                 _spin.Rotate(0f, 0f, _spinSpeed * Time.deltaTime, Space.Self);
 
             SetEmitting(inGround);
         }
+
+        private Transform Find(string name) => string.IsNullOrEmpty(name) ? null : gameObject.FindByName(name)?.transform;
 
         // Moves the FX to where the bit meets the ground; true when the tip is at or below it
         private bool UpdateGroundContact()
@@ -130,7 +136,7 @@ namespace AD3D_IndustrySolution.Runtime
             var shader = Shader.Find("Sprites/Default");
             if (shader == null)
             {
-                Plugin.Logger.LogWarning("Excavator: 'Sprites/Default' shader not found, drill particles disabled.");
+                Plugin.Logger.LogWarning("DrillAnimator: 'Sprites/Default' shader not found, drill particles disabled.");
                 return;
             }
 
@@ -169,7 +175,7 @@ namespace AD3D_IndustrySolution.Runtime
             main.simulationSpace = ParticleSystemSimulationSpace.World;
             main.startLifetime = new ParticleSystem.MinMaxCurve(lifetime.x, lifetime.y);
             main.startSpeed = new ParticleSystem.MinMaxCurve(speed.x, speed.y);
-            main.startSize = new ParticleSystem.MinMaxCurve(size.x, size.y);
+            main.startSize = new ParticleSystem.MinMaxCurve(size.x * FXScale, size.y * FXScale);
             main.startRotation = new ParticleSystem.MinMaxCurve(0f, Mathf.PI * 2f);
             main.startColor = color;
             main.gravityModifier = gravity;
@@ -180,7 +186,7 @@ namespace AD3D_IndustrySolution.Runtime
             var shape = ps.shape;
             shape.shapeType = ParticleSystemShapeType.Cone;
             shape.angle = coneAngle;
-            shape.radius = 0.35f;
+            shape.radius = 0.35f * FXScale;
 
             var sizeOverLifetime = ps.sizeOverLifetime;
             sizeOverLifetime.enabled = true;

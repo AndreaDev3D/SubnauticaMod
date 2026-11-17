@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3099139306
+CRC: 2234542368
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 5b41874870b16b6dc3ab94d3d77ad96e
+    Hash: 22f53625b0102835e83905ef88a347f6
   TypeTreeHash:
     serializedVersion: 2
     Hash: bb28e223b524cc6b7637a7337cb8f8b5
@@ -30,5 +30,7 @@ ClassTypes:
 SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/IndustrySolution/Icons/MechExcavator.png
+- Assets/IndustrySolution/Icons/Small_Drill.png
+- Assets/IndustrySolution/Prefabs/Small_Drill.prefab
 - Assets/IndustrySolution/Prefabs/Mech_Excavator.prefab
 Dependencies: []

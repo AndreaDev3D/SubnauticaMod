@@ -6,11 +6,14 @@ namespace AD3D_IndustrySolution.Runtime
 {
     // Plants each foot on the terrain: the leg swings about its hip pin until the sole reaches the ground, the foot
     // tilts to the slope about its ankle, and the hydraulic ram re-aims at the leg's lug with its rod sliding to fit.
-    // Needs the rigged model (EX_Leg_<k>, EX_Ankle_<k>, EX_RamTarget_<k>, EX_Ram_<k>, EX_RamRod_<k>); does nothing
-    // on a prefab without them. All maths is in world space, so the FBX axis conversion doesn't matter.
-    public class ExcavatorLegIK : MonoBehaviour
+    // Per leg k in Legs it needs <Prefix>Leg_<k> and <Prefix>Ankle_<k>; <Prefix>RamTarget_<k>, <Prefix>Ram_<k> and
+    // <Prefix>RamRod_<k> (a child of the ram) are optional. Does nothing on a prefab without them. All maths is in
+    // world space, so the FBX axis conversion doesn't matter.
+    public class LegIK : MonoBehaviour
     {
         // Tuning: set in Plugin.cs
+        public string Prefix = "EX_";
+        public string Legs = "FL,FR,RL,RR"; // comma separated leg keys
         public float MaxDrop = 0.8f;      // how far a foot can reach down below the machine's floor plane
         public float MaxRise = 0.6f;      // how far a foot can lift above it
         public float MaxFootTilt = 12f;   // degrees, the ankle's designed pitch range
@@ -23,6 +26,7 @@ namespace AD3D_IndustrySolution.Runtime
             public Transform Hip, Ankle, RamTarget, Ram, RamRod;
             public Quaternion HipRest, AnkleRest, RamRest;
             public Vector3 RamRodRest;
+            public float RodAlongRam; // rod pivot's distance from the ram's base pin along the ram, at rest
         }
 
         private readonly List<Leg> _legs = new List<Leg>();
@@ -30,16 +34,17 @@ namespace AD3D_IndustrySolution.Runtime
 
         private void Start()
         {
-            foreach (var k in new[] { "FL", "FR", "RL", "RR" })
+            foreach (var key in Legs.Split(','))
             {
+                var k = key.Trim();
                 var leg = new Leg
                 {
                     Name = k,
-                    Hip = gameObject.FindByName($"EX_Leg_{k}")?.transform,
-                    Ankle = gameObject.FindByName($"EX_Ankle_{k}")?.transform,
-                    RamTarget = gameObject.FindByName($"EX_RamTarget_{k}")?.transform,
-                    Ram = gameObject.FindByName($"EX_Ram_{k}")?.transform,
-                    RamRod = gameObject.FindByName($"EX_RamRod_{k}")?.transform,
+                    Hip = gameObject.FindByName($"{Prefix}Leg_{k}")?.transform,
+                    Ankle = gameObject.FindByName($"{Prefix}Ankle_{k}")?.transform,
+                    RamTarget = gameObject.FindByName($"{Prefix}RamTarget_{k}")?.transform,
+                    Ram = gameObject.FindByName($"{Prefix}Ram_{k}")?.transform,
+                    RamRod = gameObject.FindByName($"{Prefix}RamRod_{k}")?.transform,
                 };
                 if (leg.Hip == null || leg.Ankle == null)
                     continue;
@@ -48,6 +53,8 @@ namespace AD3D_IndustrySolution.Runtime
                 leg.AnkleRest = leg.Ankle.localRotation;
                 if (leg.Ram != null) leg.RamRest = leg.Ram.localRotation;
                 if (leg.RamRod != null) leg.RamRodRest = leg.RamRod.localPosition;
+                if (leg.Ram != null && leg.RamRod != null && leg.RamTarget != null)
+                    leg.RodAlongRam = Vector3.Dot(leg.RamRod.position - leg.Ram.position, (leg.RamTarget.position - leg.Ram.position).normalized);
                 _legs.Add(leg);
             }
 
@@ -129,7 +136,7 @@ namespace AD3D_IndustrySolution.Runtime
                 leg.Ram.rotation = Quaternion.FromToRotation(restDir, newDir) * leg.Ram.rotation;
 
                 if (leg.RamRod != null)
-                    leg.RamRod.position = basePin + newDir.normalized * (newDir.magnitude - restDir.magnitude);
+                    leg.RamRod.position = basePin + newDir.normalized * (leg.RodAlongRam + newDir.magnitude - restDir.magnitude);
             }
         }
 

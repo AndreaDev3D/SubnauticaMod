@@ -43,7 +43,7 @@ namespace AD3D_IndustrySolution
 
         private void InitializePrefabs()
         {
-            var excavatorPrefab = new ExcavatorPrefab(
+            var excavatorPrefab = new MachinePrefab(
                 $"MechExcavator{Constant.Suffix}",
                 "Mech Excavator",
                 "Automated drilling rig. Place it on the sea floor, power it and keep it lubricated: it drills resources into its storage.",
@@ -53,21 +53,67 @@ namespace AD3D_IndustrySolution
             excavatorPrefab.Register();
             excavatorPrefab.OnRegisterCompleted = (prefab) =>
             {
-                var animator = prefab.AddComponent<ExcavatorAnimator>();
+                var animator = prefab.AddComponent<DrillAnimator>();
+                animator.SlideName = "EX_Drill_Slide";
+                animator.Slide2Name = "EX_Drill_Slide2";
+                animator.SpinName = "EX_Drill_Spin";
+                animator.BitName = "EX_Bit_low";
                 animator.SlideStroke = 0.80f;  // telescope strokes the model was built for
                 animator.Slide2Stroke = 1.10f;
                 animator.MaxSpinSpeed = 240f;
 
                 // Plants the feet on uneven terrain (needs the rigged model; no-op otherwise)
-                var legIK = prefab.AddComponent<ExcavatorLegIK>();
+                var legIK = prefab.AddComponent<LegIK>();
+                legIK.Prefix = "EX_";
+                legIK.Legs = "FL,FR,RL,RR";
                 legIK.MaxDrop = 0.8f;
                 legIK.MaxRise = 0.6f;
                 legIK.MaxFootTilt = 12f;
 
-                var excavator = prefab.AddComponent<ExcavatorController>();
+                var excavator = prefab.AddComponent<DrillController>();
+                excavator.DisplayName = "Mech Excavator";
                 excavator.CycleSeconds = 60f;
                 excavator.PowerPerSecond = 0.25f;   // 15 power per cycle
                 excavator.LubricantPerCycle = 0.02f; // one Lubricant (25%) lasts 12-13 cycles
+            };
+
+            // Tripod drill: same drill tables and lubricant, a quarter of the storage, slower and cheaper to run
+            var smallDrillPrefab = new MachinePrefab(
+                $"SmallDrill{Constant.Suffix}",
+                "Small Drill",
+                "Compact tripod drill. Place it on the sea floor, power it and keep it lubricated: it slowly drills resources into a small storage.",
+                "Small_Drill",
+                "Small_Drill",
+                new RecipeData(new Ingredient(TechType.Titanium, 1)))
+            {
+                StorageSize = new Vector2Int(3, 3),
+                PowerPoint = new Vector3(0f, 4.5f, 0f), // the yellow cap on top of the column
+            };
+            smallDrillPrefab.Register();
+            smallDrillPrefab.OnRegisterCompleted = (prefab) =>
+            {
+                var animator = prefab.AddComponent<DrillAnimator>();
+                animator.SlideName = "SD_Drill_Slide";
+                animator.SpinName = "SD_Drill_Spin";
+                animator.BitName = "SD_Bit";
+                animator.SlideStroke = 0.80f;  // the shaft's travel in the model
+                animator.MaxSpinSpeed = 300f;
+                animator.ShakeAmplitude = 0.005f;
+                animator.FXScale = 0.6f;
+
+                var legIK = prefab.AddComponent<LegIK>();
+                legIK.Prefix = "SD_";
+                legIK.Legs = "A,B,C";
+                legIK.MaxDrop = 0.5f;  // about the +-15 degrees of hip swing the rams are built for
+                legIK.MaxRise = 0.45f;
+                legIK.MaxFootTilt = 12f;
+
+                var drill = prefab.AddComponent<DrillController>();
+                drill.DisplayName = "Small Drill";
+                drill.CycleSeconds = 90f;
+                drill.PowerPerSecond = 0.05f;    // 4.5 power per cycle, a fifth of the excavator's rate
+                drill.LubricantPerCycle = 0.02f; // one Lubricant (25%) lasts 12-13 cycles
+                drill.LubricantLightHeight = 0.6f; // clears the dome, so the light lands on the yellow lubricant cap
             };
 
             // Placeholder until per-biome tables exist (add those to DrillTables.ByBiome)

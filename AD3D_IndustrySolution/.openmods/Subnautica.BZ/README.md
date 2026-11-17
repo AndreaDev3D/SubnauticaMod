@@ -10,6 +10,7 @@ The Below Zero edition of AD3D Industry Solution. The first machine is the **Mec
 - Needs **Lubricant** to keep running: open the lubricant cap and drop some in.
 - Procedural animation: the legs adapt to uneven ground, the drill spins and telescopes down, and the bit kicks up sediment.
 - Hover the machine to see its status, lubricant and power; click it to turn it on or off.
+- **Small Drill**: a compact tripod drill with the same resources, a small 3 × 3 storage, a slower cycle and a fifth of the power draw.
 
 ## Installation
 
