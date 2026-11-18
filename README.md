@@ -9,9 +9,10 @@ Every mod is available for both games and is published on [OpenMods](https://ope
 | Mod | What it adds | Subnautica | Below Zero |
 | :--- | :--- | :---: | :---: |
 | **Light Solution** | Buildable indoor and outdoor lights, with a central switch to recolour and dim every fixture in range. | [OpenMods](https://openmods.net/mod/ad3d-light-solution-subnautica) | [OpenMods](https://openmods.net/mod/ad3d-lightsolution-mod) |
-| **Energy Solution** | Solar panels, a wind turbine and a depth-scaling Deep Engine to power bases the sun never reaches. | [OpenMods](https://openmods.net/mod/ad3d-energysolution-mod) | [OpenMods](https://openmods.net/mod/ad3d-energysolution-mod-below-zero) |
+| **Energy Solution** | Solar panels and arrays, a wind turbine, a Biomass Burner and a depth-scaling Deep Engine to power bases the sun never reaches. | [OpenMods](https://openmods.net/mod/ad3d-energysolution-mod) | [OpenMods](https://openmods.net/mod/ad3d-energysolution-mod-below-zero) |
 | **Storage Solution** | Quantum crates, cabinets and wall storage, plus a storage monitor and a resource uploader. | [OpenMods](https://openmods.net/mod/ad3d-storagesolution-mod) | [OpenMods](https://openmods.net/mod/ad3d-storagesolution-mod-below-zero) |
-| **Industry Solution** | A walking Mech Excavator that drills resources from the sea floor into its own storage. | [OpenMods](https://openmods.net/mod/ad3d-industry-solution-subnautica) | [OpenMods](https://openmods.net/mod/ad3d-industry-solution-below-zero) |
+| **Industry Solution** | A walking Mech Excavator and a compact Small Drill that drill resources from the sea floor into their own storage. | [OpenMods](https://openmods.net/mod/ad3d-industry-solution-subnautica) | [OpenMods](https://openmods.net/mod/ad3d-industry-solution-below-zero) |
+| **Transport Solution** | A suspended monorail for land and sea floor: self-linking pylons, a pod to ride, cargo wagons and a Prawn Suit carrier. | [OpenMods](https://openmods.net/mod/ad3d-transport-solution-subnautica) | [OpenMods](https://openmods.net/mod/ad3d-transport-solution-below-zero) |
 
 ## Requirements
 
